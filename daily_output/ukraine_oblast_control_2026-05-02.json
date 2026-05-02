@@ -1,0 +1,211 @@
+{
+  "metadata": {
+    "snapshot_id": 1777665002,
+    "extraction_date": "2026-05-02T22:33:55.314Z",
+    "data_date": "2026-05-01T19:50:02.000Z",
+    "source": "deepstatemap.live",
+    "version": "1.0",
+    "processed_polygons": 109,
+    "skipped_features": 418
+  },
+  "summary": {
+    "grand_total_km2": {
+      "ukrainian_km2": 43438.24055835716,
+      "russian_km2": 70690.94740676961,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 1547.6264198901474,
+      "unknown_km2": 45183.59862435583,
+      "total_area_km2": 160860.41300937274
+    },
+    "oblast_count": 11
+  },
+  "oblasts": {
+    "Chernihiv": {
+      "code": "UA-74",
+      "center": [
+        31.3,
+        51.5
+      ],
+      "ukrainian_km2": 10530.75837959593,
+      "russian_km2": 0,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 0,
+      "unknown_km2": 0,
+      "total_polygons": 3,
+      "total_area_km2": 10530.75837959593,
+      "ukrainian_percent": "100.00",
+      "russian_percent": "0.00",
+      "contested_percent": "0.00"
+    },
+    "Donetsk": {
+      "code": "UA-14",
+      "center": [
+        37.8,
+        48
+      ],
+      "ukrainian_km2": 72.75447447978097,
+      "russian_km2": 5691.20202055259,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 669.1163262035376,
+      "unknown_km2": 0,
+      "total_polygons": 13,
+      "total_area_km2": 6433.072821235908,
+      "ukrainian_percent": "1.13",
+      "russian_percent": "88.47",
+      "contested_percent": "10.40"
+    },
+    "Kharkiv": {
+      "code": "UA-63",
+      "center": [
+        36.2,
+        49.9
+      ],
+      "ukrainian_km2": 10647.140362640317,
+      "russian_km2": 348.8883789625759,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 142.31305854329716,
+      "unknown_km2": 0,
+      "total_polygons": 18,
+      "total_area_km2": 11138.34180014619,
+      "ukrainian_percent": "95.59",
+      "russian_percent": "3.13",
+      "contested_percent": "1.28"
+    },
+    "Kherson": {
+      "code": "UA-65",
+      "center": [
+        33.3,
+        46.6
+      ],
+      "ukrainian_km2": 6372.59933471212,
+      "russian_km2": 0,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 195.9238900312252,
+      "unknown_km2": 0,
+      "total_polygons": 16,
+      "total_area_km2": 6568.523224743345,
+      "ukrainian_percent": "97.02",
+      "russian_percent": "0.00",
+      "contested_percent": "2.98"
+    },
+    "Kyiv": {
+      "code": "UA-32",
+      "center": [
+        30.5,
+        50.4
+      ],
+      "ukrainian_km2": 7702.99626883874,
+      "russian_km2": 0,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 0,
+      "unknown_km2": 0,
+      "total_polygons": 3,
+      "total_area_km2": 7702.99626883874,
+      "ukrainian_percent": "100.00",
+      "russian_percent": "0.00",
+      "contested_percent": "0.00"
+    },
+    "Luhansk": {
+      "code": "UA-09",
+      "center": [
+        39.3,
+        48.9
+      ],
+      "ukrainian_km2": 0,
+      "russian_km2": 18906.355759257236,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 0,
+      "unknown_km2": 16394.108772302094,
+      "total_polygons": 2,
+      "total_area_km2": 35300.46453155933,
+      "ukrainian_percent": "0.00",
+      "russian_percent": "53.56",
+      "contested_percent": "0.00"
+    },
+    "Mykolaiv": {
+      "code": "UA-48",
+      "center": [
+        31.9,
+        47
+      ],
+      "ukrainian_km2": 1632.1678373986156,
+      "russian_km2": 24.292516701855305,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 4.438247271625775,
+      "unknown_km2": 0,
+      "total_polygons": 11,
+      "total_area_km2": 1660.8986013720967,
+      "ukrainian_percent": "98.27",
+      "russian_percent": "1.46",
+      "contested_percent": "0.27"
+    },
+    "Odesa": {
+      "code": "UA-51",
+      "center": [
+        30.7,
+        46.5
+      ],
+      "ukrainian_km2": 0,
+      "russian_km2": 0,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 0,
+      "unknown_km2": 3584.5544405044307,
+      "total_polygons": 2,
+      "total_area_km2": 3584.5544405044307,
+      "ukrainian_percent": "0.00",
+      "russian_percent": "0.00",
+      "contested_percent": "0.00"
+    },
+    "Sumy": {
+      "code": "UA-59",
+      "center": [
+        34.8,
+        50.9
+      ],
+      "ukrainian_km2": 6421.932239569167,
+      "russian_km2": 355.1734443053462,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 146.30743182341496,
+      "unknown_km2": 0,
+      "total_polygons": 31,
+      "total_area_km2": 6923.413115697928,
+      "ukrainian_percent": "92.76",
+      "russian_percent": "5.13",
+      "contested_percent": "2.11"
+    },
+    "Zaporizhzhia": {
+      "code": "UA-23",
+      "center": [
+        35.2,
+        47.8
+      ],
+      "ukrainian_km2": 57.891661122492906,
+      "russian_km2": 45365.035286990016,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 389.5274660170467,
+      "unknown_km2": 0,
+      "total_polygons": 8,
+      "total_area_km2": 45812.454414129556,
+      "ukrainian_percent": "0.13",
+      "russian_percent": "99.02",
+      "contested_percent": "0.85"
+    },
+    "Crimea": {
+      "code": "UA-43",
+      "center": [
+        34.4,
+        45.3
+      ],
+      "ukrainian_km2": 0,
+      "russian_km2": 0,
+      "russian_pre2022_km2": 0,
+      "contested_km2": 0,
+      "unknown_km2": 25204.935411549308,
+      "total_polygons": 2,
+      "total_area_km2": 25204.935411549308,
+      "ukrainian_percent": "0.00",
+      "russian_percent": "0.00",
+      "contested_percent": "0.00"
+    }
+  }
+}
