@@ -1,0 +1,55 @@
+# GitHub Actions Workflow for Daily Ukraine Data Extraction
+# 
+# Setup instructions:
+# 1. Create a GitHub repository
+# 2. Copy daily-extract.js to the repo
+# 3. Create .github/workflows/ directory
+# 4. Save this file as .github/workflows/daily-extract.yml
+# 5. Add your output files to the repo (they'll be version controlled)
+#
+# This runs every day at 20:00 UTC (6am AEST next day)
+
+name: Daily Ukraine Territory Extraction
+
+on:
+  schedule:
+    # Run at 20:00 UTC daily
+    - cron: '0 20 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run extraction
+      run: node daily-extract.js
+      
+    - name: Commit and push results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add daily_output/ snapshots/
+        git commit -m "Daily extraction $(date -u +%Y-%m-%d)" || echo "No changes"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: daily-output-${{ github.run_id }}
+        path: |
+          daily_output/
+          snapshots/
