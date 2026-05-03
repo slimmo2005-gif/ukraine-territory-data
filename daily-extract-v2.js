@@ -157,20 +157,33 @@ function determineOblast(center) {
   return closest;
 }
 
-function parseControlStatus(item) {
-  // Determine control status from item properties
-  const color = item.color || '';
-  const name = item.name || '';
-  const type = item.type || '';
+function parseControlStatus(feature) {
+  // Get properties from feature
+  const props = feature.properties || feature;
+  const name = props.name || props.description || '';
+  const styleUrl = props.styleUrl || props.style || '';
   
-  // Based on DeepStateMap color coding
-  if (color.includes('red') || name.includes('russia') || type === 'occupied') {
-    return 'russian';
-  } else if (color.includes('yellow') || color.includes('orange') || type === 'contested') {
-    return 'disputed';
-  } else {
+  // Parse status from name (Ukrainian/English bilingual)
+  if (name.includes('Звільнено') || name.includes('Liberated')) {
     return 'ukrainian';
   }
+  if (name.includes('окуповано') || name.includes('occupied')) {
+    if (name.includes('до') || name.includes('to') || name.includes('before')) {
+      return 'russian_pre2022';
+    }
+    return 'russian';
+  }
+  if (name.includes('невідомий') || name.includes('unknown') || name.includes('проникнення')) {
+    return 'contested';
+  }
+  
+  // Fallback: try to infer from style color
+  if (styleUrl.includes('00FF00')) return 'ukrainian'; // Green
+  if (styleUrl.includes('FF0000')) return 'russian'; // Red
+  if (styleUrl.includes('FFFF00')) return 'contested'; // Yellow
+  
+  // Default to ukrainian if unclear
+  return 'ukrainian';
 }
 
 function processData(data) {
@@ -191,8 +204,9 @@ function processData(data) {
     };
   }
   
-  // Process items
-  const items = data?.items || data?.features || [];
+  // Process items from DeepStateMap GeoJSON structure
+  const items = data?.map?.features || data?.features || [];
+  console.log(`Processing ${items.length} features from DeepStateMap...`);
   let totalPolygons = 0;
   
   for (const item of items) {
