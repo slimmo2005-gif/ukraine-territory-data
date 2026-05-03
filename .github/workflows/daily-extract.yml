@@ -1,25 +1,16 @@
 # GitHub Actions Workflow for Daily Ukraine Data Extraction
-# 
-# Setup instructions:
-# 1. Create a GitHub repository
-# 2. Copy daily-extract.js to the repo
-# 3. Create .github/workflows/ directory
-# 4. Save this file as .github/workflows/daily-extract.yml
-# 5. Add your output files to the repo (they'll be version controlled)
-#
-# This runs every day at 20:00 UTC (6am AEST next day)
-
 name: Daily Ukraine Territory Extraction
 
 on:
   schedule:
-    # Run at 20:00 UTC daily
     - cron: '0 20 * * *'
-  workflow_dispatch:  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   extract:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout repository
@@ -34,19 +25,10 @@ jobs:
       run: npm install
       
     - name: Run extraction
-      run: node daily-extract.js
+      run: node daily-extract-v2.js
       
-    - name: Commit and push results
+    - name: List output files
       run: |
-<<<<<<< Updated upstream
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add daily_output/ snapshots/
-        git commit -m "Daily extraction $(date -u +%Y-%m-%d)" || echo "No changes"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-=======
         echo "Generated files:"
         ls -la data/ || echo "No data yet"
         
@@ -57,17 +39,13 @@ jobs:
         git add data/
         if ! git diff --cached --quiet; then
           git commit -m "Daily extraction $(date -u +%Y-%m-%d)"
-          git pull --ff-only origin master || echo "Pull failed, continuing with push"
-          git push --force-with-lease origin HEAD:master
+          git push origin HEAD:master || echo "Push failed - data saved as artifact only"
         else
           echo "No changes to commit"
         fi
->>>>>>> Stashed changes
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: daily-output-${{ github.run_id }}
-        path: |
-          daily_output/
-          snapshots/
+        path: data/
