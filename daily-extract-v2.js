@@ -213,18 +213,18 @@ function parseControlStatus(feature) {
   }
   if (name.includes('окуповано') || name.includes('occupied')) {
     if (name.includes('до') || name.includes('to') || name.includes('before')) {
-      return 'russian_pre2022';
+      return 'russian';
     }
     return 'russian';
   }
   if (name.includes('невідомий') || name.includes('unknown') || name.includes('проникнення')) {
-    return 'contested';
+    return 'disputed';  // Use 'disputed' not 'contested' to match field names
   }
   
   // Fallback: try to infer from style color
   if (styleUrl.includes('00FF00')) return 'ukrainian'; // Green
   if (styleUrl.includes('FF0000')) return 'russian'; // Red
-  if (styleUrl.includes('FFFF00')) return 'contested'; // Yellow
+  if (styleUrl.includes('FFFF00')) return 'disputed'; // Yellow -> disputed
   
   // Default to ukrainian if unclear
   return 'ukrainian';
