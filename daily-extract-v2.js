@@ -73,15 +73,34 @@ async function fetchDeepStateData() {
 }
 
 function calculatePolygonArea(coords) {
-  if (!coords || coords.length < 3) return 0;
+  if (!coords || !Array.isArray(coords) || coords.length < 3) return 0;
+  
+  // Ensure coords is array of [lon, lat] pairs, not flat array
+  if (typeof coords[0] === 'number') {
+    // Flat array - need to pair them up
+    const paired = [];
+    for (let i = 0; i < coords.length; i += 2) {
+      if (i + 1 < coords.length) {
+        paired.push([coords[i], coords[i + 1]]);
+      }
+    }
+    coords = paired;
+  }
+  
+  if (coords.length < 3) return 0;
   
   // Simple planar area calculation (approximate for small areas)
   let area = 0;
   const R = 6371; // Earth radius in km
   
   for (let i = 0; i < coords.length - 1; i++) {
-    const [lon1, lat1] = coords[i];
-    const [lon2, lat2] = coords[i + 1];
+    const point1 = coords[i];
+    const point2 = coords[i + 1];
+    
+    if (!Array.isArray(point1) || !Array.isArray(point2)) continue;
+    
+    const [lon1, lat1] = point1;
+    const [lon2, lat2] = point2;
     
     // Convert to radians
     const lat1Rad = lat1 * Math.PI / 180;
@@ -97,17 +116,37 @@ function calculatePolygonArea(coords) {
 }
 
 function getPolygonCenter(coords) {
-  if (!coords || coords.length === 0) return null;
+  if (!coords || !Array.isArray(coords) || coords.length === 0) return null;
+  
+  // Ensure coords is array of [lon, lat] pairs
+  if (typeof coords[0] === 'number') {
+    const paired = [];
+    for (let i = 0; i < coords.length; i += 2) {
+      if (i + 1 < coords.length) {
+        paired.push([coords[i], coords[i + 1]]);
+      }
+    }
+    coords = paired;
+  }
+  
+  if (coords.length === 0) return null;
   
   let sumLat = 0, sumLon = 0;
-  coords.forEach(([lon, lat]) => {
-    sumLat += lat;
-    sumLon += lon;
+  let validPoints = 0;
+  
+  coords.forEach(point => {
+    if (Array.isArray(point) && point.length >= 2) {
+      sumLon += point[0];
+      sumLat += point[1];
+      validPoints++;
+    }
   });
   
+  if (validPoints === 0) return null;
+  
   return {
-    lat: sumLat / coords.length,
-    lon: sumLon / coords.length
+    lat: sumLat / validPoints,
+    lon: sumLon / validPoints
   };
 }
 
