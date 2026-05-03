@@ -59,7 +59,12 @@ async function fetchDeepStateData() {
     }
     
     const data = await response.json();
-    console.log(`✓ Fetched data with ${data?.items?.length || 0} items`);
+    const featureCount = data?.map?.features?.length || data?.features?.length || 0;
+    console.log(`✓ Fetched data with ${featureCount} features`);
+    console.log(`  Data keys: ${Object.keys(data).join(', ')}`);
+    if (data.map) {
+      console.log(`  Map keys: ${Object.keys(data.map).join(', ')}`);
+    }
     return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
@@ -207,6 +212,10 @@ function processData(data) {
   // Process items from DeepStateMap GeoJSON structure
   const items = data?.map?.features || data?.features || [];
   console.log(`Processing ${items.length} features from DeepStateMap...`);
+  if (items.length === 0) {
+    console.log('WARNING: No features found! Data structure:');
+    console.log(JSON.stringify(data).substring(0, 200));
+  }
   let totalPolygons = 0;
   
   for (const item of items) {
