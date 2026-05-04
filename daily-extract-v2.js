@@ -255,6 +255,25 @@ function processData(data) {
     console.log('WARNING: No features found! Data structure:');
     console.log(JSON.stringify(data).substring(0, 200));
   }
+  
+  // Debug: check first few features for disputed/contested markers
+  let disputedCount = 0;
+  if (items.length > 0) {
+    console.log('First feature properties:', Object.keys(items[0].properties || {}));
+    console.log('First feature sample:', JSON.stringify(items[0].properties || {}).substring(0, 150));
+  }
+  for (let i = 0; i < Math.min(20, items.length); i++) {
+    const props = items[i].properties || {};
+    const name = props.name || props.description || '';
+    const style = props.styleUrl || props.style || '';
+    if (name.includes('невідомий') || name.includes('unknown') || name.includes('проникнення') || name.includes('окуповано') ||
+        style.includes('FFFF00') || style.includes('yellow') || style.includes('red') || style.includes('FF0000')) {
+      console.log(`Feature ${i}: name="${name}", style="${style}"`);
+      disputedCount++;
+    }
+  }
+  console.log(`Found ${disputedCount} potentially disputed/occupied features in sample`);
+  
   let totalPolygons = 0;
   
   for (const item of items) {
