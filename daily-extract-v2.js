@@ -275,6 +275,7 @@ function processData(data) {
   console.log(`Found ${disputedCount} potentially disputed/occupied features in sample`);
   
   let totalPolygons = 0;
+  let debugDisputedCount = 0;
   
   for (const item of items) {
     const geometry = item.geometry || item;
@@ -294,11 +295,20 @@ function processData(data) {
     const oblast = determineOblast(center);
     const status = parseControlStatus(item.properties || item);
     
+    // Debug: log disputed features
+    if (status === 'disputed') {
+      debugDisputedCount++;
+      if (debugDisputedCount <= 5) {
+        console.log(`Disputed feature ${debugDisputedCount}: oblast=${oblast}, area=${area.toFixed(2)}km²`);
+      }
+    }
+    
     if (oblast && oblastData[oblast]) {
       oblastData[oblast][`${status}_controlled_km2`] += area;
       totalPolygons++;
     }
   }
+  console.log(`Total disputed features processed: ${debugDisputedCount}`);
   
   // Calculate totals
   let totalRussian = 0, totalUkrainian = 0, totalDisputed = 0, totalArea = 0;
