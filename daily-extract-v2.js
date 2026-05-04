@@ -245,7 +245,7 @@ function processData(data) {
       oblast: key,
       russian_controlled_km2: 0,
       ukrainian_controlled_km2: 0,
-      disputed_km2: 0,
+      disputed_controlled_km2: 0,
       total_area_km2: OBLASTS[key].totalArea,
       russian_change_km2: 0,
       ukrainian_change_km2: 0,
@@ -317,8 +317,8 @@ function processData(data) {
   
   // Debug: Check oblast disputed totals
   for (const [key, data] of Object.entries(oblastData)) {
-    if (data.disputed_km2 > 0) {
-      console.log(`Oblast ${key}: disputed = ${data.disputed_km2.toFixed(2)} km²`);
+    if (data.disputed_controlled_km2 > 0) {
+      console.log(`Oblast ${key}: disputed = ${data.disputed_controlled_km2.toFixed(2)} km²`);
     }
   }
   
@@ -327,7 +327,7 @@ function processData(data) {
   for (const data of Object.values(oblastData)) {
     totalRussian += data.russian_controlled_km2;
     totalUkrainian += data.ukrainian_controlled_km2;
-    totalDisputed += data.disputed_km2;
+    totalDisputed += data.disputed_controlled_km2;
     totalArea += data.total_area_km2;
   }
   
