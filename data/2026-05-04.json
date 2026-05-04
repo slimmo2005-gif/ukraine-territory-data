@@ -1,19 +1,19 @@
 {
   "date": "2026-05-04",
   "source": "deepstate",
-  "total_russian_controlled_km2": 136412.15,
-  "total_ukrainian_controlled_km2": 162491.83,
-  "total_disputed_km2": 1564.63,
+  "total_russian_controlled_km2": 136414.15,
+  "total_ukrainian_controlled_km2": 162489.28,
+  "total_disputed_km2": 1568.26,
   "total_area_km2": 603757,
-  "russian_change_km2": 136412.15,
-  "ukrainian_change_km2": 162491.83,
-  "disputed_change_km2": 1564.63,
+  "russian_change_km2": 136414.15,
+  "ukrainian_change_km2": 162489.28,
+  "disputed_change_km2": 1568.26,
   "oblasts": [
     {
       "oblast": "donetsk",
       "russian_controlled_km2": 5777.104860705551,
       "ukrainian_controlled_km2": 8997.783539774748,
-      "disputed_controlled_km2": 673.4009886351319,
+      "disputed_controlled_km2": 673.3368307349041,
       "total_area_km2": 26517,
       "russian_change_km2": 5777.104860705551,
       "ukrainian_change_km2": 8997.783539774748,
@@ -41,11 +41,11 @@
     },
     {
       "oblast": "zaporizhzhia",
-      "russian_controlled_km2": 47380.781242563055,
+      "russian_controlled_km2": 47382.77539161783,
       "ukrainian_controlled_km2": 59.76935073848768,
-      "disputed_controlled_km2": 400.78942311495734,
+      "disputed_controlled_km2": 401.9339310745084,
       "total_area_km2": 27180,
-      "russian_change_km2": 47380.781242563055,
+      "russian_change_km2": 47382.77539161783,
       "ukrainian_change_km2": 59.76935073848768,
       "disputed_change_km2": null
     },
@@ -62,11 +62,11 @@
     {
       "oblast": "sumy",
       "russian_controlled_km2": 341.3442123396981,
-      "ukrainian_controlled_km2": 6185.007211753683,
-      "disputed_controlled_km2": 140.5626544626969,
+      "ukrainian_controlled_km2": 6182.453643240767,
+      "disputed_controlled_km2": 143.11622297559785,
       "total_area_km2": 23834,
       "russian_change_km2": 341.3442123396981,
-      "ukrainian_change_km2": 6185.007211753683,
+      "ukrainian_change_km2": 6182.453643240767,
       "disputed_change_km2": null
     },
     {
@@ -270,5 +270,5 @@
       "disputed_change_km2": null
     }
   ],
-  "last_updated": "2026-05-04T07:57:18.749Z"
+  "last_updated": "2026-05-04T21:09:11.868Z"
 }
