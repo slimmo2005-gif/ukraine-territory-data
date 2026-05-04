@@ -315,6 +315,13 @@ function processData(data) {
   }
   console.log(`Total disputed features processed: ${debugDisputedCount}`);
   
+  // Debug: Check oblast disputed totals
+  for (const [key, data] of Object.entries(oblastData)) {
+    if (data.disputed_km2 > 0) {
+      console.log(`Oblast ${key}: disputed = ${data.disputed_km2.toFixed(2)} km²`);
+    }
+  }
+  
   // Calculate totals
   let totalRussian = 0, totalUkrainian = 0, totalDisputed = 0, totalArea = 0;
   for (const data of Object.values(oblastData)) {
