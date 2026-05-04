@@ -207,24 +207,29 @@ function parseControlStatus(feature) {
   const name = props.name || props.description || '';
   const styleUrl = props.styleUrl || props.style || '';
   
+  // Debug: log what we're checking
+  const hasUnknown = name.includes('невідомий') || name.includes('Unknown') || name.includes('unknown');
+  const hasYellow = styleUrl.includes('FFFF00') || styleUrl.includes('yellow');
+  
   // Parse status from name (Ukrainian/English bilingual)
   if (name.includes('Звільнено') || name.includes('Liberated')) {
     return 'ukrainian';
   }
   if (name.includes('окуповано') || name.includes('occupied')) {
-    if (name.includes('до') || name.includes('to') || name.includes('before')) {
-      return 'russian';
-    }
     return 'russian';
   }
-  if (name.includes('невідомий') || name.includes('unknown') || name.includes('проникнення')) {
-    return 'disputed';  // Use 'disputed' not 'contested' to match field names
+  if (hasUnknown || hasYellow || name.includes('проникнення')) {
+    console.log(`  -> Detected DISPUTED: name="${name.substring(0,30)}..." style="${styleUrl.substring(0,20)}..."`);
+    return 'disputed';
   }
   
   // Fallback: try to infer from style color
   if (styleUrl.includes('00FF00')) return 'ukrainian'; // Green
   if (styleUrl.includes('FF0000')) return 'russian'; // Red
-  if (styleUrl.includes('FFFF00')) return 'disputed'; // Yellow -> disputed
+  if (styleUrl.includes('FFFF00')) {
+    console.log(`  -> Detected DISPUTED (color): style="${styleUrl}"`);
+    return 'disputed';
+  }
   
   // Default to ukrainian if unclear
   return 'ukrainian';
