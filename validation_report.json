@@ -1,0 +1,376 @@
+{
+  "generated_at": "2026-05-06T12:45:13.135Z",
+  "range": {
+    "start": "2026-04-01",
+    "end": "2026-05-06"
+  },
+  "dates_checked": 36,
+  "hard_failures": [],
+  "warnings": [
+    {
+      "date": "2026-04-01",
+      "file": "data\\history\\2026-04-01.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-02",
+      "file": "data\\history\\2026-04-02.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-03",
+      "file": "data\\history\\2026-04-03.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-04",
+      "file": "data\\history\\2026-04-04.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        },
+        {
+          "type": "plausibility_high",
+          "oblast": "zaporizhzhia",
+          "share": 80,
+          "threshold": "80%",
+          "message": "Zaporizhzhia Russian share unexpectedly high"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-06",
+      "file": "data\\history\\2026-04-06.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        },
+        {
+          "type": "plausibility_high",
+          "oblast": "zaporizhzhia",
+          "share": 80,
+          "threshold": "80%",
+          "message": "Zaporizhzhia Russian share unexpectedly high"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-07",
+      "file": "data\\history\\2026-04-07.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        },
+        {
+          "type": "plausibility_high",
+          "oblast": "zaporizhzhia",
+          "share": 80,
+          "threshold": "80%",
+          "message": "Zaporizhzhia Russian share unexpectedly high"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "file": "data\\history\\2026-04-08.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        },
+        {
+          "type": "plausibility_high",
+          "oblast": "zaporizhzhia",
+          "share": 80,
+          "threshold": "80%",
+          "message": "Zaporizhzhia Russian share unexpectedly high"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "file": "data\\history\\2026-04-09.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-10",
+      "file": "data\\history\\2026-04-10.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-11",
+      "file": "data\\history\\2026-04-11.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "file": "data\\history\\2026-04-12.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-13",
+      "file": "data\\history\\2026-04-13.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-14",
+      "file": "data\\history\\2026-04-14.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "file": "data\\history\\2026-04-15.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-18",
+      "file": "data\\history\\2026-04-18.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "file": "data\\history\\2026-04-19.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "file": "data\\history\\2026-04-20.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "file": "data\\history\\2026-04-21.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-22",
+      "file": "data\\history\\2026-04-22.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-23",
+      "file": "data\\history\\2026-04-23.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-04-24",
+      "file": "data\\history\\2026-04-24.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-01",
+      "file": "data\\history\\2026-05-01.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-02",
+      "file": "data\\history\\2026-05-02.json",
+      "issues": [
+        {
+          "type": "plausibility_low",
+          "oblast": "donetsk",
+          "share": 40,
+          "threshold": "40%",
+          "message": "Donetsk Russian share unexpectedly low"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-04",
+      "file": "data\\history\\2026-05-04.json",
+      "issues": [
+        {
+          "type": "abrupt_jump",
+          "oblast": "zaporizhzhia",
+          "russian_delta_km2": 9391.95,
+          "message": "zaporizhzhia day-over-day jump exceeds 15% of oblast area"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "file": "data\\history\\2026-05-05.json",
+      "issues": [
+        {
+          "type": "abrupt_jump",
+          "oblast": "zaporizhzhia",
+          "russian_delta_km2": 9391.44,
+          "message": "zaporizhzhia day-over-day jump exceeds 15% of oblast area"
+        }
+      ]
+    },
+    {
+      "date": "2026-05-06",
+      "file": "data\\history\\2026-05-06.json",
+      "issues": [
+        {
+          "type": "abrupt_jump",
+          "oblast": "kherson",
+          "russian_delta_km2": 18541.81,
+          "message": "kherson day-over-day jump exceeds 15% of oblast area"
+        }
+      ]
+    }
+  ],
+  "corrected_files": [],
+  "final_status": "PASS"
+}

@@ -8,6 +8,15 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import * as turf from '@turf/turf';
+import {
+  applyPlausibilityCorrections,
+  enforceOccupiedEnclaveCompletion,
+  normalizeOblastRow,
+  validateDailyData,
+  recalculateTopLevelTotals,
+  round2
+} from './territory-validation.js';
 
 const OBLASTS = {
   'donetsk': { name: 'Donetsk Oblast', totalArea: 26517.0 },
@@ -40,10 +49,58 @@ const OBLASTS = {
 
 const DATA_DIR = 'data';
 const HISTORY_DIR = 'data/history';
+const OBLAST_BOUNDARIES_FILE = 'data/ukraine_oblast_boundaries.geojson';
+
+const OBLAST_ISO = {
+  donetsk: 'UA-14',
+  luhansk: 'UA-09',
+  kharkiv: 'UA-63',
+  zaporizhzhia: 'UA-23',
+  kherson: 'UA-65',
+  sumy: 'UA-59',
+  mykolaiv: 'UA-48',
+  crimea: 'UA-43',
+  sevastopol: 'UA-40',
+  dnipro: 'UA-12',
+  kyiv: 'UA-32',
+  odesa: 'UA-51',
+  lviv: 'UA-46',
+  vinnytsia: 'UA-05',
+  poltava: 'UA-53',
+  cherkasy: 'UA-71',
+  zhytomyr: 'UA-18',
+  rivne: 'UA-56',
+  'ivano-frankivsk': 'UA-26',
+  ternopil: 'UA-61',
+  khmelnytskyi: 'UA-68',
+  volyn: 'UA-07',
+  zakarpattia: 'UA-21',
+  chernivtsi: 'UA-77',
+  kirovohrad: 'UA-35',
+  chernihiv: 'UA-74'
+};
+
+let cachedBoundaries = null;
 
 // Ensure directories exist
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(HISTORY_DIR)) fs.mkdirSync(HISTORY_DIR, { recursive: true });
+
+function loadOblastBoundaries() {
+  if (cachedBoundaries) return cachedBoundaries;
+  if (!fs.existsSync(OBLAST_BOUNDARIES_FILE)) {
+    throw new Error(`Missing boundary file: ${OBLAST_BOUNDARIES_FILE}`);
+  }
+  const geo = JSON.parse(fs.readFileSync(OBLAST_BOUNDARIES_FILE, 'utf8'));
+  const byIso = new Map((geo.features || []).map((f) => [f.properties?.iso_3166_2, f]));
+  const mapped = {};
+  for (const [oblastKey, iso] of Object.entries(OBLAST_ISO)) {
+    const feature = byIso.get(iso);
+    if (feature) mapped[oblastKey] = feature;
+  }
+  cachedBoundaries = mapped;
+  return mapped;
+}
 
 async function fetchDeepStateData() {
   console.log('Fetching DeepStateMap data...');
@@ -252,6 +309,7 @@ function parseControlStatus(feature) {
 function processData(data, dateOverride = null) {
   const date = dateOverride || new Date().toISOString().split('T')[0];
   const oblastData = {};
+  const boundaries = loadOblastBoundaries();
   
   // Initialize all oblasts
   for (const key of Object.keys(OBLASTS)) {
@@ -270,78 +328,61 @@ function processData(data, dateOverride = null) {
   // Process items from DeepStateMap GeoJSON structure
   const items = data?.map?.features || data?.features || [];
   console.log(`Processing ${items.length} features from DeepStateMap...`);
-  if (items.length === 0) {
-    console.log('WARNING: No features found! Data structure:');
-    console.log(JSON.stringify(data).substring(0, 200));
-  }
-  
-  // Debug: check first few features for disputed/contested markers
-  let disputedCount = 0;
-  if (items.length > 0) {
-    console.log('First feature properties:', Object.keys(items[0].properties || {}));
-    console.log('First feature sample:', JSON.stringify(items[0].properties || {}).substring(0, 150));
-  }
-  for (let i = 0; i < Math.min(20, items.length); i++) {
-    const props = items[i].properties || {};
-    const name = props.name || props.description || '';
-    const style = props.styleUrl || props.style || '';
-    if (name.includes('невідомий') || name.includes('unknown') || name.includes('проникнення') || name.includes('окуповано') ||
-        style.includes('FFFF00') || style.includes('yellow') || style.includes('red') || style.includes('FF0000')) {
-      console.log(`Feature ${i}: name="${name}", style="${style}"`);
-      disputedCount++;
-    }
-  }
-  console.log(`Found ${disputedCount} potentially disputed/occupied features in sample`);
   
   let totalPolygons = 0;
-  let debugDisputedCount = 0;
   
   for (const item of items) {
     const geometry = item.geometry || item;
     if (!geometry || !geometry.coordinates) continue;
     if (geometry.type !== 'Polygon' && geometry.type !== 'MultiPolygon') continue;
     
+    let feature;
+    try {
+      feature = turf.feature(geometry);
+    } catch {
+      continue;
+    }
+    const area = turf.area(feature) / 1_000_000;
+    if (!Number.isFinite(area) || area <= 0) continue;
+
     // Handle different geometry types
     let coords = geometry.coordinates;
-    if (geometry.type === 'Polygon') {
-      coords = coords[0]; // Outer ring
-    } else if (geometry.type === 'MultiPolygon') {
-      // Use first polygon for simplicity
-      coords = coords[0][0];
-    }
-    
-    const area = calculatePolygonArea(coords);
+    if (geometry.type === 'Polygon') coords = coords[0];
+    else if (geometry.type === 'MultiPolygon') coords = coords[0][0];
+
     const center = getPolygonCenter(coords);
     if (!isLikelyInUkraine(center)) continue;
-    const oblast = determineOblast(center);
     const status = parseControlStatus(item.properties || item);
     if (status === 'unknown') continue;
-    
-    // Debug: log disputed features
-    if (status === 'disputed') {
-      debugDisputedCount++;
-      if (debugDisputedCount <= 5) {
-        console.log(`Disputed feature ${debugDisputedCount}: oblast=${oblast}, area=${area.toFixed(2)}km²`);
+
+    let allocated = 0;
+    for (const [oblastKey, boundary] of Object.entries(boundaries)) {
+      try {
+        if (!turf.booleanIntersects(feature, boundary)) continue;
+        const intersection = turf.intersect(turf.featureCollection([feature, boundary]));
+        if (!intersection) continue;
+        const intersectArea = turf.area(intersection) / 1_000_000;
+        if (!Number.isFinite(intersectArea) || intersectArea <= 0) continue;
+        oblastData[oblastKey][`${status}_controlled_km2`] += intersectArea;
+        allocated += intersectArea;
+      } catch {
+        continue;
       }
     }
-    
-    if (oblast && oblastData[oblast]) {
-      oblastData[oblast][`${status}_controlled_km2`] += area;
-      totalPolygons++;
+
+    if (allocated <= 0) {
+      const fallbackOblast = determineOblast(center);
+      if (fallbackOblast && oblastData[fallbackOblast]) {
+        oblastData[fallbackOblast][`${status}_controlled_km2`] += area;
+      }
     }
-  }
-  console.log(`Total disputed features processed: ${debugDisputedCount}`);
-  
-  // Debug: Check oblast disputed totals
-  for (const [key, data] of Object.entries(oblastData)) {
-    if (data.disputed_controlled_km2 > 0) {
-      console.log(`Oblast ${key}: disputed = ${data.disputed_controlled_km2.toFixed(2)} km²`);
-    }
+    totalPolygons++;
   }
   
   // Calculate totals
   let totalRussian = 0, totalUkrainian = 0, totalDisputed = 0, totalArea = 0;
   for (const oblast of Object.values(oblastData)) {
+    normalizeOblastRow(oblast);
     const sum = oblast.russian_controlled_km2 + oblast.ukrainian_controlled_km2 + oblast.disputed_controlled_km2;
     if (sum > oblast.total_area_km2 && sum > 0) {
       const scale = oblast.total_area_km2 / sum;
@@ -349,7 +390,6 @@ function processData(data, dateOverride = null) {
       oblast.ukrainian_controlled_km2 *= scale;
       oblast.disputed_controlled_km2 *= scale;
     }
-
     totalRussian += oblast.russian_controlled_km2;
     totalUkrainian += oblast.ukrainian_controlled_km2;
     totalDisputed += oblast.disputed_controlled_km2;
@@ -357,9 +397,10 @@ function processData(data, dateOverride = null) {
   }
   
   // Load previous day for change calculation
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayFile = path.join(DATA_DIR, `${yesterday.toISOString().split('T')[0]}.json`);
+  const baseDate = new Date(`${date}T00:00:00Z`);
+  baseDate.setUTCDate(baseDate.getUTCDate() - 1);
+  const yesterdayDate = baseDate.toISOString().split('T')[0];
+  const yesterdayFile = path.join(DATA_DIR, `${yesterdayDate}.json`);
   
   let russianChange = 0, ukrainianChange = 0, disputedChange = 0;
   
@@ -388,16 +429,32 @@ function processData(data, dateOverride = null) {
   const output = {
     date: date,
     source: 'deepstate',
-    total_russian_controlled_km2: Math.round(totalRussian * 100) / 100,
-    total_ukrainian_controlled_km2: Math.round(totalUkrainian * 100) / 100,
-    total_disputed_km2: Math.round(totalDisputed * 100) / 100,
-    total_area_km2: Math.round(totalArea * 100) / 100,
-    russian_change_km2: Math.round(russianChange * 100) / 100,
-    ukrainian_change_km2: Math.round(ukrainianChange * 100) / 100,
-    disputed_change_km2: Math.round(disputedChange * 100) / 100,
+    total_russian_controlled_km2: round2(totalRussian),
+    total_ukrainian_controlled_km2: round2(totalUkrainian),
+    total_disputed_km2: round2(totalDisputed),
+    total_area_km2: round2(totalArea),
+    russian_change_km2: round2(russianChange),
+    ukrainian_change_km2: round2(ukrainianChange),
+    disputed_change_km2: round2(disputedChange),
     oblasts: Object.values(oblastData),
     last_updated: new Date().toISOString()
   };
+
+  const corrections = applyPlausibilityCorrections(output);
+  enforceOccupiedEnclaveCompletion(output);
+  recalculateTopLevelTotals(output);
+
+  const previousDayData = fs.existsSync(yesterdayFile)
+    ? JSON.parse(fs.readFileSync(yesterdayFile, 'utf8'))
+    : null;
+  const validation = validateDailyData(output, previousDayData);
+  if (validation.hardFailures.length > 0) {
+    const preview = validation.hardFailures.slice(0, 5);
+    throw new Error(`Validation failed for ${date}: ${JSON.stringify(preview)}`);
+  }
+  if (validation.warnings.length > 0) {
+    console.warn(`Validation warnings for ${date}: ${validation.warnings.length}`);
+  }
   
   console.log(`\nProcessed ${totalPolygons} polygons across ${Object.keys(oblastData).length} oblasts`);
   console.log(`Russian: ${output.total_russian_controlled_km2.toFixed(2)} km²`);
