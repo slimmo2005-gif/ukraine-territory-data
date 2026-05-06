@@ -7,6 +7,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const OBLASTS = {
   'donetsk': { name: 'Donetsk Oblast', totalArea: 26517.0 },
@@ -248,8 +249,8 @@ function parseControlStatus(feature) {
   return 'unknown';
 }
 
-function processData(data) {
-  const date = new Date().toISOString().split('T')[0];
+function processData(data, dateOverride = null) {
+  const date = dateOverride || new Date().toISOString().split('T')[0];
   const oblastData = {};
   
   // Initialize all oblasts
@@ -445,4 +446,10 @@ async function main() {
   }
 }
 
-main();
+const thisFile = fileURLToPath(import.meta.url);
+const invokedFile = process.argv[1] ? path.resolve(process.argv[1]) : '';
+if (invokedFile && path.resolve(thisFile) === invokedFile) {
+  main();
+}
+
+export { fetchDeepStateData, processData, saveData, main };

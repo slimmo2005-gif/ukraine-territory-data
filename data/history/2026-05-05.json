@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-06",
+  "date": "2026-05-05",
   "source": "deepstate",
   "total_russian_controlled_km2": 82960.81,
   "total_ukrainian_controlled_km2": 42610.15,
@@ -270,5 +270,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-06T12:27:00.203Z"
+  "last_updated": "2026-05-06T12:21:34.431Z"
 }

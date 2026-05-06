@@ -1,9 +1,9 @@
 {
-  "date": "2026-05-06",
+  "date": "2026-05-01",
   "source": "deepstate",
-  "total_russian_controlled_km2": 82960.81,
-  "total_ukrainian_controlled_km2": 42610.15,
-  "total_disputed_km2": 1397.51,
+  "total_russian_controlled_km2": 82953.15,
+  "total_ukrainian_controlled_km2": 42619.13,
+  "total_disputed_km2": 1394.18,
   "total_area_km2": 603757,
   "russian_change_km2": 0,
   "ukrainian_change_km2": 0,
@@ -11,9 +11,9 @@
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 5777.328006743603,
+      "russian_controlled_km2": 5772.3812744842,
       "ukrainian_controlled_km2": 73.84892046860355,
-      "disputed_controlled_km2": 676.1855358175937,
+      "disputed_controlled_km2": 676.0402638774012,
       "total_area_km2": 26517,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -21,7 +21,7 @@
     },
     {
       "oblast": "luhansk",
-      "russian_controlled_km2": 18846.499681194233,
+      "russian_controlled_km2": 18843.148631148888,
       "ukrainian_controlled_km2": 0,
       "disputed_controlled_km2": 0,
       "total_area_km2": 26684,
@@ -32,7 +32,7 @@
     {
       "oblast": "kharkiv",
       "russian_controlled_km2": 341.37953794289575,
-      "ukrainian_controlled_km2": 10523.047361596728,
+      "ukrainian_controlled_km2": 10529.470262762887,
       "disputed_controlled_km2": 139.51319490601523,
       "total_area_km2": 31415,
       "russian_change_km2": 0,
@@ -41,9 +41,9 @@
     },
     {
       "oblast": "zaporizhzhia",
-      "russian_controlled_km2": 26917.710692066834,
-      "ukrainian_controlled_km2": 33.95440807622877,
-      "disputed_controlled_km2": 228.33489985693598,
+      "russian_controlled_km2": 26918.343711337493,
+      "ukrainian_controlled_km2": 33.95663567355442,
+      "disputed_controlled_km2": 227.69965298895286,
       "total_area_km2": 27180,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -62,8 +62,8 @@
     {
       "oblast": "sumy",
       "russian_controlled_km2": 341.3442123396981,
-      "ukrainian_controlled_km2": 6182.453643240767,
-      "disputed_controlled_km2": 143.11622297559785,
+      "ukrainian_controlled_km2": 6185.007211753683,
+      "disputed_controlled_km2": 140.5626544626969,
       "total_area_km2": 23834,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -270,5 +270,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-06T12:27:00.203Z"
+  "last_updated": "2026-05-06T12:20:30.311Z"
 }
