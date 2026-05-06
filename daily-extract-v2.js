@@ -197,8 +197,20 @@ function determineOblast(center) {
       closest = key;
     }
   }
+
+  // Do not force-assign distant polygons to random oblasts.
+  // This removes a lot of spillover from non-oblast map layers.
+  if (minDist > 3.0) {
+    return null;
+  }
   
   return closest;
+}
+
+function isLikelyInUkraine(center) {
+  if (!center) return false;
+  // Broad bounding box including Crimea and frontline waters.
+  return center.lat >= 44.0 && center.lat <= 53.5 && center.lon >= 22.0 && center.lon <= 41.5;
 }
 
 function parseControlStatus(feature) {
@@ -206,33 +218,34 @@ function parseControlStatus(feature) {
   const props = feature.properties || feature;
   const name = props.name || props.description || '';
   const styleUrl = props.styleUrl || props.style || '';
+  const normalizedName = name.toLowerCase();
+  const normalizedStyle = styleUrl.toLowerCase();
   
-  // Debug: log what we're checking
-  const hasUnknown = name.includes('невідомий') || name.includes('Unknown') || name.includes('unknown');
-  const hasYellow = styleUrl.includes('FFFF00') || styleUrl.includes('yellow');
+  const hasUnknown = normalizedName.includes('невідом') || normalizedName.includes('unknown');
+  const hasOccupied = normalizedName.includes('окупован') || normalizedName.includes('occupied');
+  const hasLiberated = normalizedName.includes('звільн') || normalizedName.includes('liberat');
+  const hasIncursion = normalizedName.includes('проникнен') || normalizedName.includes('incursion');
+  const hasDisputedColor = normalizedStyle.includes('bcaaa4') || normalizedStyle.includes('ffff00') || normalizedStyle.includes('yellow');
+  const hasRussianColor = normalizedStyle.includes('a52714') || normalizedStyle.includes('ff5252') || normalizedStyle.includes('ff0000');
+  const hasUkrainianColor = normalizedStyle.includes('0f9d58') || normalizedStyle.includes('00ff00');
   
-  // Parse status from name (Ukrainian/English bilingual)
-  if (name.includes('Звільнено') || name.includes('Liberated')) {
+  // Parse status from bilingual labels first.
+  if (hasLiberated) {
     return 'ukrainian';
   }
-  if (name.includes('окуповано') || name.includes('occupied')) {
+  if (hasOccupied) {
     return 'russian';
   }
-  if (hasUnknown || hasYellow || name.includes('проникнення')) {
-    console.log(`  -> Detected DISPUTED: name="${name.substring(0,30)}..." style="${styleUrl.substring(0,20)}..."`);
+  if (hasUnknown || hasDisputedColor || hasIncursion) {
     return 'disputed';
   }
   
-  // Fallback: try to infer from style color
-  if (styleUrl.includes('00FF00')) return 'ukrainian'; // Green
-  if (styleUrl.includes('FF0000')) return 'russian'; // Red
-  if (styleUrl.includes('FFFF00')) {
-    console.log(`  -> Detected DISPUTED (color): style="${styleUrl}"`);
-    return 'disputed';
-  }
+  // Fallback: infer from style palette codes.
+  if (hasUkrainianColor) return 'ukrainian';
+  if (hasRussianColor) return 'russian';
+  if (hasDisputedColor) return 'disputed';
   
-  // Default to ukrainian if unclear
-  return 'ukrainian';
+  return 'unknown';
 }
 
 function processData(data) {
@@ -285,6 +298,7 @@ function processData(data) {
   for (const item of items) {
     const geometry = item.geometry || item;
     if (!geometry || !geometry.coordinates) continue;
+    if (geometry.type !== 'Polygon' && geometry.type !== 'MultiPolygon') continue;
     
     // Handle different geometry types
     let coords = geometry.coordinates;
@@ -297,8 +311,10 @@ function processData(data) {
     
     const area = calculatePolygonArea(coords);
     const center = getPolygonCenter(coords);
+    if (!isLikelyInUkraine(center)) continue;
     const oblast = determineOblast(center);
     const status = parseControlStatus(item.properties || item);
+    if (status === 'unknown') continue;
     
     // Debug: log disputed features
     if (status === 'disputed') {
@@ -324,11 +340,19 @@ function processData(data) {
   
   // Calculate totals
   let totalRussian = 0, totalUkrainian = 0, totalDisputed = 0, totalArea = 0;
-  for (const data of Object.values(oblastData)) {
-    totalRussian += data.russian_controlled_km2;
-    totalUkrainian += data.ukrainian_controlled_km2;
-    totalDisputed += data.disputed_controlled_km2;
-    totalArea += data.total_area_km2;
+  for (const oblast of Object.values(oblastData)) {
+    const sum = oblast.russian_controlled_km2 + oblast.ukrainian_controlled_km2 + oblast.disputed_controlled_km2;
+    if (sum > oblast.total_area_km2 && sum > 0) {
+      const scale = oblast.total_area_km2 / sum;
+      oblast.russian_controlled_km2 *= scale;
+      oblast.ukrainian_controlled_km2 *= scale;
+      oblast.disputed_controlled_km2 *= scale;
+    }
+
+    totalRussian += oblast.russian_controlled_km2;
+    totalUkrainian += oblast.ukrainian_controlled_km2;
+    totalDisputed += oblast.disputed_controlled_km2;
+    totalArea += oblast.total_area_km2;
   }
   
   // Load previous day for change calculation
@@ -351,7 +375,7 @@ function processData(data) {
         if (yesterdayOblast) {
           oblastData[key].russian_change_km2 = oblastData[key].russian_controlled_km2 - yesterdayOblast.russian_controlled_km2;
           oblastData[key].ukrainian_change_km2 = oblastData[key].ukrainian_controlled_km2 - yesterdayOblast.ukrainian_controlled_km2;
-          oblastData[key].disputed_change_km2 = oblastData[key].disputed_km2 - yesterdayOblast.disputed_km2;
+          oblastData[key].disputed_change_km2 = oblastData[key].disputed_controlled_km2 - (yesterdayOblast.disputed_controlled_km2 || 0);
         }
       }
     } catch (e) {
