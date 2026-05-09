@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T10:03:05.805Z",
+  "generated_at": "2026-05-09T10:20:02.010Z",
   "range": {
     "start": "2026-04-01",
     "end": "2026-05-09"
@@ -369,8 +369,50 @@
           "message": "kherson day-over-day jump exceeds 15% of oblast area"
         }
       ]
+    },
+    {
+      "date": "2026-05-09",
+      "file": "data\\history\\2026-05-09.json",
+      "issues": [
+        {
+          "type": "abrupt_jump",
+          "oblast": "donetsk",
+          "russian_delta_km2": 8208.86,
+          "message": "donetsk day-over-day jump exceeds 15% of oblast area"
+        }
+      ]
     }
   ],
-  "corrected_files": [],
+  "corrected_files": [
+    {
+      "date": "2026-05-04",
+      "file": "data\\history\\2026-05-04.json",
+      "top_level_before": {
+        "russian": 103341.13,
+        "ukrainian": 499021.2,
+        "disputed": 1394.66
+      },
+      "top_level_after": {
+        "russian": 106041.13,
+        "ukrainian": 496321.2,
+        "disputed": 1394.66
+      },
+      "oblast_changes": [
+        {
+          "oblast": "crimea",
+          "fields": {
+            "russian_controlled_km2": {
+              "before": 24300,
+              "after": 27000
+            },
+            "ukrainian_controlled_km2": {
+              "before": 2700,
+              "after": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
   "final_status": "PASS"
 }

@@ -46,6 +46,14 @@ function normalizeOblastRow(row) {
     row.disputed_controlled_km2 = row.disputed_controlled_km2 * scale;
   }
 
+  // DeepState overlays typically mark occupied/disputed/frontline polygons.
+  // Uncovered oblast remainder is treated as Ukrainian-controlled baseline.
+  const afterScale = row.russian_controlled_km2 + row.ukrainian_controlled_km2 + row.disputed_controlled_km2;
+  const remainder = row.total_area_km2 - afterScale;
+  if (remainder > TOLERANCE) {
+    row.ukrainian_controlled_km2 += remainder;
+  }
+
   row.russian_controlled_km2 = round2(row.russian_controlled_km2);
   row.ukrainian_controlled_km2 = round2(row.ukrainian_controlled_km2);
   row.disputed_controlled_km2 = round2(row.disputed_controlled_km2);
@@ -59,8 +67,6 @@ function enforceOccupiedEnclaveCompletion(data) {
   for (const key of enclaveKeys) {
     const row = data.oblasts.find((o) => o.oblast === key);
     if (!row) continue;
-    const hasNoAltControl = row.ukrainian_controlled_km2 <= TOLERANCE && row.disputed_controlled_km2 <= TOLERANCE;
-    if (!hasNoAltControl) continue;
     row.ukrainian_controlled_km2 = 0;
     row.disputed_controlled_km2 = 0;
     row.russian_controlled_km2 = round2(row.total_area_km2);

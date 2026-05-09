@@ -278,16 +278,24 @@ function parseControlStatus(feature) {
   const styleUrl = props.styleUrl || props.style || '';
   const normalizedName = name.toLowerCase();
   const normalizedStyle = styleUrl.toLowerCase();
+  const isTerritoryOverlay = normalizedName.includes('geojson.territories.');
   
   const hasUnknown = normalizedName.includes('невідом') || normalizedName.includes('unknown');
   const hasOccupied = normalizedName.includes('окупован') || normalizedName.includes('occupied');
   const hasOrdlo = normalizedName.includes('ордло') || normalizedName.includes('ordlo') || normalizedName.includes('territories.ordlo');
+  const hasCrimeaOverlay = normalizedName.includes('territories.crimea');
   const hasLiberated = normalizedName.includes('звільн') || normalizedName.includes('liberat');
   const hasIncursion = normalizedName.includes('проникнен') || normalizedName.includes('incursion');
   const hasDisputedColor = normalizedStyle.includes('bcaaa4') || normalizedStyle.includes('ffff00') || normalizedStyle.includes('yellow');
   const hasRussianColor = normalizedStyle.includes('a52714') || normalizedStyle.includes('ff5252') || normalizedStyle.includes('ff0000') || normalizedStyle.includes('880e4f');
   const hasUkrainianColor = normalizedStyle.includes('0f9d58') || normalizedStyle.includes('00ff00');
   
+  // Ignore non-Ukraine geopolitical overlays (e.g., Transnistria) so they do not
+  // pollute oblast control metrics. Keep Crimea/ORDLO overlays as occupied context.
+  if (isTerritoryOverlay && !hasCrimeaOverlay && !hasOrdlo) {
+    return 'ignore';
+  }
+
   // Parse status from bilingual labels first.
   if (hasLiberated) {
     return 'ukrainian';
@@ -354,7 +362,7 @@ function processData(data, dateOverride = null) {
     const center = getPolygonCenter(coords);
     if (!isLikelyInUkraine(center)) continue;
     const status = parseControlStatus(item.properties || item);
-    if (status === 'unknown') continue;
+    if (status === 'unknown' || status === 'ignore') continue;
 
     let allocated = 0;
     for (const [oblastKey, boundary] of Object.entries(boundaries)) {
