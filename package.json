@@ -5,7 +5,9 @@
   "scripts": {
     "investigate": "node investigator.js",
     "parse-tiles": "node tile-parser.js",
-    "analyze": "node analyze-structure.js"
+    "analyze": "node analyze-structure.js",
+    "weekly-history": "node build-weekly-history.js",
+    "recompute-weekly-deltas": "node recompute-weekly-deltas.js"
   },
   "dependencies": {
     "@mapbox/vector-tile": "^1.3.1",
