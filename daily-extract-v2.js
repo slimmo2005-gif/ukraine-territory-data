@@ -281,17 +281,18 @@ function parseControlStatus(feature) {
   
   const hasUnknown = normalizedName.includes('невідом') || normalizedName.includes('unknown');
   const hasOccupied = normalizedName.includes('окупован') || normalizedName.includes('occupied');
+  const hasOrdlo = normalizedName.includes('ордло') || normalizedName.includes('ordlo') || normalizedName.includes('territories.ordlo');
   const hasLiberated = normalizedName.includes('звільн') || normalizedName.includes('liberat');
   const hasIncursion = normalizedName.includes('проникнен') || normalizedName.includes('incursion');
   const hasDisputedColor = normalizedStyle.includes('bcaaa4') || normalizedStyle.includes('ffff00') || normalizedStyle.includes('yellow');
-  const hasRussianColor = normalizedStyle.includes('a52714') || normalizedStyle.includes('ff5252') || normalizedStyle.includes('ff0000');
+  const hasRussianColor = normalizedStyle.includes('a52714') || normalizedStyle.includes('ff5252') || normalizedStyle.includes('ff0000') || normalizedStyle.includes('880e4f');
   const hasUkrainianColor = normalizedStyle.includes('0f9d58') || normalizedStyle.includes('00ff00');
   
   // Parse status from bilingual labels first.
   if (hasLiberated) {
     return 'ukrainian';
   }
-  if (hasOccupied) {
+  if (hasOccupied || hasOrdlo) {
     return 'russian';
   }
   if (hasUnknown || hasDisputedColor || hasIncursion) {
