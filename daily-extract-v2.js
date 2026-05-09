@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import * as turf from '@turf/turf';
 import {
   applyPlausibilityCorrections,
+  canonicalizeOblastRows,
   enforceOccupiedEnclaveCompletion,
   normalizeOblastRow,
   validateDailyData,
@@ -26,9 +27,8 @@ const OBLASTS = {
   'kherson': { name: 'Kherson Oblast', totalArea: 28461.0 },
   'sumy': { name: 'Sumy Oblast', totalArea: 23834.0 },
   'mykolaiv': { name: 'Mykolaiv Oblast', totalArea: 24598.0 },
-  'crimea': { name: 'Republic of Crimea', totalArea: 27000.0 },
-  'sevastopol': { name: 'Sevastopol', totalArea: 864.0 },
-  'dnipro': { name: 'Dnipro Oblast', totalArea: 31923.0 },
+  'crimea': { name: 'Republic of Crimea (incl. Sevastopol)', totalArea: 27864.0 },
+  'dnipropetrovsk': { name: 'Dnipropetrovsk Oblast', totalArea: 31923.0 },
   'kyiv': { name: 'Kyiv Oblast', totalArea: 28131.0 },
   'odesa': { name: 'Odesa Oblast', totalArea: 33310.0 },
   'lviv': { name: 'Lviv Oblast', totalArea: 21833.0 },
@@ -59,9 +59,8 @@ const OBLAST_ISO = {
   kherson: 'UA-65',
   sumy: 'UA-59',
   mykolaiv: 'UA-48',
-  crimea: 'UA-43',
-  sevastopol: 'UA-40',
-  dnipro: 'UA-12',
+  crimea: ['UA-43', 'UA-40'],
+  dnipropetrovsk: 'UA-12',
   kyiv: 'UA-32',
   odesa: 'UA-51',
   lviv: 'UA-46',
@@ -94,9 +93,10 @@ function loadOblastBoundaries() {
   const geo = JSON.parse(fs.readFileSync(OBLAST_BOUNDARIES_FILE, 'utf8'));
   const byIso = new Map((geo.features || []).map((f) => [f.properties?.iso_3166_2, f]));
   const mapped = {};
-  for (const [oblastKey, iso] of Object.entries(OBLAST_ISO)) {
-    const feature = byIso.get(iso);
-    if (feature) mapped[oblastKey] = feature;
+  for (const [oblastKey, isoOrList] of Object.entries(OBLAST_ISO)) {
+    const isoList = Array.isArray(isoOrList) ? isoOrList : [isoOrList];
+    const features = isoList.map((iso) => byIso.get(iso)).filter(Boolean);
+    if (features.length > 0) mapped[oblastKey] = features;
   }
   cachedBoundaries = mapped;
   return mapped;
@@ -221,8 +221,7 @@ function determineOblast(center) {
     'sumy': { lat: 50.9, lon: 34.8 },
     'mykolaiv': { lat: 46.9, lon: 32.0 },
     'crimea': { lat: 45.3, lon: 34.4 },
-    'sevastopol': { lat: 44.6, lon: 33.5 },
-    'dnipro': { lat: 48.5, lon: 35.0 },
+    'dnipropetrovsk': { lat: 48.5, lon: 35.0 },
     'kyiv': { lat: 50.4, lon: 30.5 },
     'odesa': { lat: 46.5, lon: 30.7 },
     'lviv': { lat: 49.8, lon: 24.0 },
@@ -365,15 +364,17 @@ function processData(data, dateOverride = null) {
     if (status === 'unknown' || status === 'ignore') continue;
 
     let allocated = 0;
-    for (const [oblastKey, boundary] of Object.entries(boundaries)) {
+    for (const [oblastKey, boundaryList] of Object.entries(boundaries)) {
       try {
-        if (!turf.booleanIntersects(feature, boundary)) continue;
-        const intersection = turf.intersect(turf.featureCollection([feature, boundary]));
-        if (!intersection) continue;
-        const intersectArea = turf.area(intersection) / 1_000_000;
-        if (!Number.isFinite(intersectArea) || intersectArea <= 0) continue;
-        oblastData[oblastKey][`${status}_controlled_km2`] += intersectArea;
-        allocated += intersectArea;
+        for (const boundary of boundaryList) {
+          if (!turf.booleanIntersects(feature, boundary)) continue;
+          const intersection = turf.intersect(turf.featureCollection([feature, boundary]));
+          if (!intersection) continue;
+          const intersectArea = turf.area(intersection) / 1_000_000;
+          if (!Number.isFinite(intersectArea) || intersectArea <= 0) continue;
+          oblastData[oblastKey][`${status}_controlled_km2`] += intersectArea;
+          allocated += intersectArea;
+        }
       } catch {
         continue;
       }
@@ -448,6 +449,8 @@ function processData(data, dateOverride = null) {
     oblasts: Object.values(oblastData),
     last_updated: new Date().toISOString()
   };
+
+  canonicalizeOblastRows(output);
 
   const corrections = applyPlausibilityCorrections(output);
   enforceOccupiedEnclaveCompletion(output);

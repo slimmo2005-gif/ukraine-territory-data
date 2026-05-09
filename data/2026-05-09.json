@@ -5,8 +5,8 @@
   "total_ukrainian_controlled_km2": 486433.69,
   "total_disputed_km2": 1496.66,
   "total_area_km2": 603757,
-  "russian_change_km2": 9834.78,
-  "ukrainian_change_km2": -9834.79,
+  "russian_change_km2": 9834.77,
+  "ukrainian_change_km2": -9834.78,
   "disputed_change_km2": 0,
   "oblasts": [
     {
@@ -81,26 +81,16 @@
     },
     {
       "oblast": "crimea",
-      "russian_controlled_km2": 27000,
+      "russian_controlled_km2": 27864,
       "ukrainian_controlled_km2": 0,
       "disputed_controlled_km2": 0,
-      "total_area_km2": 27000,
-      "russian_change_km2": -964.5999999999985,
-      "ukrainian_change_km2": 964.6,
+      "total_area_km2": 27864,
+      "russian_change_km2": -249.3199999999997,
+      "ukrainian_change_km2": 1113.32,
       "disputed_change_km2": 0
     },
     {
-      "oblast": "sevastopol",
-      "russian_controlled_km2": 864,
-      "ukrainian_controlled_km2": 0,
-      "disputed_controlled_km2": 0,
-      "total_area_km2": 864,
-      "russian_change_km2": -148.71000000000004,
-      "ukrainian_change_km2": 148.71,
-      "disputed_change_km2": 0
-    },
-    {
-      "oblast": "dnipro",
+      "oblast": "dnipropetrovsk",
       "russian_controlled_km2": 88.99,
       "ukrainian_controlled_km2": 31616.59,
       "disputed_controlled_km2": 217.42,
@@ -270,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-09T10:25:29.399Z"
+  "last_updated": "2026-05-09T10:47:11.099Z"
 }

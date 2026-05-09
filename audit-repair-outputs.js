@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import {
   applyPlausibilityCorrections,
+  canonicalizeOblastRows,
   enforceOccupiedEnclaveCompletion,
   normalizeOblastRow,
   recalculateTopLevelTotals,
@@ -99,6 +100,7 @@ async function main() {
 
     const before = loadJson(historyPath);
     const repaired = clone(before);
+    canonicalizeOblastRows(repaired);
     repaired.oblasts.forEach((row) => normalizeOblastRow(row));
     recalculateTopLevelTotals(repaired);
 

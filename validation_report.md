@@ -3,9 +3,43 @@
 - Dates checked: 39
 - Hard failures: 0
 - Warnings: 27
-- Corrected files: 1
+- Corrected files: 36
 - Final status: PASS
 
 ## Corrected Files
+- 2026-04-01: data\history\2026-04-01.json
+- 2026-04-02: data\history\2026-04-02.json
+- 2026-04-03: data\history\2026-04-03.json
+- 2026-04-04: data\history\2026-04-04.json
+- 2026-04-06: data\history\2026-04-06.json
+- 2026-04-07: data\history\2026-04-07.json
+- 2026-04-08: data\history\2026-04-08.json
+- 2026-04-09: data\history\2026-04-09.json
+- 2026-04-10: data\history\2026-04-10.json
+- 2026-04-11: data\history\2026-04-11.json
+- 2026-04-12: data\history\2026-04-12.json
+- 2026-04-13: data\history\2026-04-13.json
+- 2026-04-14: data\history\2026-04-14.json
+- 2026-04-15: data\history\2026-04-15.json
+- 2026-04-16: data\history\2026-04-16.json
+- 2026-04-17: data\history\2026-04-17.json
+- 2026-04-18: data\history\2026-04-18.json
+- 2026-04-19: data\history\2026-04-19.json
+- 2026-04-20: data\history\2026-04-20.json
+- 2026-04-21: data\history\2026-04-21.json
+- 2026-04-22: data\history\2026-04-22.json
+- 2026-04-23: data\history\2026-04-23.json
+- 2026-04-24: data\history\2026-04-24.json
+- 2026-04-26: data\history\2026-04-26.json
+- 2026-04-27: data\history\2026-04-27.json
+- 2026-04-28: data\history\2026-04-28.json
+- 2026-04-29: data\history\2026-04-29.json
+- 2026-04-30: data\history\2026-04-30.json
+- 2026-05-01: data\history\2026-05-01.json
+- 2026-05-02: data\history\2026-05-02.json
+- 2026-05-03: data\history\2026-05-03.json
 - 2026-05-04: data\history\2026-05-04.json
-  - crimea: russian_controlled_km2, ukrainian_controlled_km2
+- 2026-05-05: data\history\2026-05-05.json
+- 2026-05-06: data\history\2026-05-06.json
+- 2026-05-07: data\history\2026-05-07.json
+- 2026-05-08: data\history\2026-05-08.json

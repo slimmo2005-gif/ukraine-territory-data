@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T10:20:02.010Z",
+  "generated_at": "2026-05-09T10:47:15.910Z",
   "range": {
     "start": "2026-04-01",
     "end": "2026-05-09"
@@ -385,33 +385,544 @@
   ],
   "corrected_files": [
     {
+      "date": "2026-04-01",
+      "file": "data\\history\\2026-04-01.json",
+      "top_level_before": {
+        "russian": 87093.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "top_level_after": {
+        "russian": 86229.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-02",
+      "file": "data\\history\\2026-04-02.json",
+      "top_level_before": {
+        "russian": 87093.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "top_level_after": {
+        "russian": 86229.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-03",
+      "file": "data\\history\\2026-04-03.json",
+      "top_level_before": {
+        "russian": 87093.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "top_level_after": {
+        "russian": 86229.21,
+        "ukrainian": 515277.53,
+        "disputed": 1386.27
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-04",
+      "file": "data\\history\\2026-04-04.json",
+      "top_level_before": {
+        "russian": 87094.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "top_level_after": {
+        "russian": 86230.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-06",
+      "file": "data\\history\\2026-04-06.json",
+      "top_level_before": {
+        "russian": 87094.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "top_level_after": {
+        "russian": 86230.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-07",
+      "file": "data\\history\\2026-04-07.json",
+      "top_level_before": {
+        "russian": 87094.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "top_level_after": {
+        "russian": 86230.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-08",
+      "file": "data\\history\\2026-04-08.json",
+      "top_level_before": {
+        "russian": 87094.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "top_level_after": {
+        "russian": 86230.52,
+        "ukrainian": 515281.31,
+        "disputed": 1381.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-09",
+      "file": "data\\history\\2026-04-09.json",
+      "top_level_before": {
+        "russian": 87103.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "top_level_after": {
+        "russian": 86239.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-10",
+      "file": "data\\history\\2026-04-10.json",
+      "top_level_before": {
+        "russian": 87103.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "top_level_after": {
+        "russian": 86239.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-11",
+      "file": "data\\history\\2026-04-11.json",
+      "top_level_before": {
+        "russian": 87103.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "top_level_after": {
+        "russian": 86239.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-12",
+      "file": "data\\history\\2026-04-12.json",
+      "top_level_before": {
+        "russian": 87103.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "top_level_after": {
+        "russian": 86239.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-13",
+      "file": "data\\history\\2026-04-13.json",
+      "top_level_before": {
+        "russian": 87103.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "top_level_after": {
+        "russian": 86239.83,
+        "ukrainian": 515290.82,
+        "disputed": 1362.34
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-14",
+      "file": "data\\history\\2026-04-14.json",
+      "top_level_before": {
+        "russian": 87124.11,
+        "ukrainian": 515227.89,
+        "disputed": 1404.99
+      },
+      "top_level_after": {
+        "russian": 86260.11,
+        "ukrainian": 515227.89,
+        "disputed": 1404.99
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-15",
+      "file": "data\\history\\2026-04-15.json",
+      "top_level_before": {
+        "russian": 87124.11,
+        "ukrainian": 515227.89,
+        "disputed": 1404.99
+      },
+      "top_level_after": {
+        "russian": 86260.11,
+        "ukrainian": 515227.89,
+        "disputed": 1404.99
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-16",
+      "file": "data\\history\\2026-04-16.json",
+      "top_level_before": {
+        "russian": 87137.72,
+        "ukrainian": 515224.08,
+        "disputed": 1395.2
+      },
+      "top_level_after": {
+        "russian": 86273.72,
+        "ukrainian": 515224.08,
+        "disputed": 1395.2
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-17",
+      "file": "data\\history\\2026-04-17.json",
+      "top_level_before": {
+        "russian": 87137.72,
+        "ukrainian": 515224.08,
+        "disputed": 1395.2
+      },
+      "top_level_after": {
+        "russian": 86273.72,
+        "ukrainian": 515224.08,
+        "disputed": 1395.2
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-18",
+      "file": "data\\history\\2026-04-18.json",
+      "top_level_before": {
+        "russian": 87138.19,
+        "ukrainian": 515224.8,
+        "disputed": 1394.01
+      },
+      "top_level_after": {
+        "russian": 86274.19,
+        "ukrainian": 515224.8,
+        "disputed": 1394.01
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-19",
+      "file": "data\\history\\2026-04-19.json",
+      "top_level_before": {
+        "russian": 87138.19,
+        "ukrainian": 515224.8,
+        "disputed": 1394.01
+      },
+      "top_level_after": {
+        "russian": 86274.19,
+        "ukrainian": 515224.8,
+        "disputed": 1394.01
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-20",
+      "file": "data\\history\\2026-04-20.json",
+      "top_level_before": {
+        "russian": 87144.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "top_level_after": {
+        "russian": 86280.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-21",
+      "file": "data\\history\\2026-04-21.json",
+      "top_level_before": {
+        "russian": 87144.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "top_level_after": {
+        "russian": 86280.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-22",
+      "file": "data\\history\\2026-04-22.json",
+      "top_level_before": {
+        "russian": 87144.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "top_level_after": {
+        "russian": 86280.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-23",
+      "file": "data\\history\\2026-04-23.json",
+      "top_level_before": {
+        "russian": 87144.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "top_level_after": {
+        "russian": 86280.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-24",
+      "file": "data\\history\\2026-04-24.json",
+      "top_level_before": {
+        "russian": 87144.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "top_level_after": {
+        "russian": 86280.91,
+        "ukrainian": 515223.03,
+        "disputed": 1389.06
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-26",
+      "file": "data\\history\\2026-04-26.json",
+      "top_level_before": {
+        "russian": 87142.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "top_level_after": {
+        "russian": 86278.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-27",
+      "file": "data\\history\\2026-04-27.json",
+      "top_level_before": {
+        "russian": 87142.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "top_level_after": {
+        "russian": 86278.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-28",
+      "file": "data\\history\\2026-04-28.json",
+      "top_level_before": {
+        "russian": 87142.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "top_level_after": {
+        "russian": 86278.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-29",
+      "file": "data\\history\\2026-04-29.json",
+      "top_level_before": {
+        "russian": 87142.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "top_level_after": {
+        "russian": 86278.63,
+        "ukrainian": 515211.93,
+        "disputed": 1402.44
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-04-30",
+      "file": "data\\history\\2026-04-30.json",
+      "top_level_before": {
+        "russian": 87144.75,
+        "ukrainian": 515215.11,
+        "disputed": 1397.14
+      },
+      "top_level_after": {
+        "russian": 86280.75,
+        "ukrainian": 515215.11,
+        "disputed": 1397.14
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-01",
+      "file": "data\\history\\2026-05-01.json",
+      "top_level_before": {
+        "russian": 87145.4,
+        "ukrainian": 515217.43,
+        "disputed": 1394.17
+      },
+      "top_level_after": {
+        "russian": 86281.4,
+        "ukrainian": 515217.43,
+        "disputed": 1394.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-02",
+      "file": "data\\history\\2026-05-02.json",
+      "top_level_before": {
+        "russian": 87145.4,
+        "ukrainian": 515217.43,
+        "disputed": 1394.17
+      },
+      "top_level_after": {
+        "russian": 86281.4,
+        "ukrainian": 515217.43,
+        "disputed": 1394.17
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-03",
+      "file": "data\\history\\2026-05-03.json",
+      "top_level_before": {
+        "russian": 87146.46,
+        "ukrainian": 515219.01,
+        "disputed": 1391.53
+      },
+      "top_level_after": {
+        "russian": 86282.46,
+        "ukrainian": 515219.01,
+        "disputed": 1391.53
+      },
+      "oblast_changes": []
+    },
+    {
       "date": "2026-05-04",
       "file": "data\\history\\2026-05-04.json",
       "top_level_before": {
-        "russian": 103341.13,
-        "ukrainian": 499021.2,
-        "disputed": 1394.66
-      },
-      "top_level_after": {
         "russian": 106041.13,
         "ukrainian": 496321.2,
         "disputed": 1394.66
       },
-      "oblast_changes": [
-        {
-          "oblast": "crimea",
-          "fields": {
-            "russian_controlled_km2": {
-              "before": 24300,
-              "after": 27000
-            },
-            "ukrainian_controlled_km2": {
-              "before": 2700,
-              "after": 0
-            }
-          }
-        }
-      ]
+      "top_level_after": {
+        "russian": 105177.13,
+        "ukrainian": 496321.2,
+        "disputed": 1394.66
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-05",
+      "file": "data\\history\\2026-05-05.json",
+      "top_level_before": {
+        "russian": 87144.84,
+        "ukrainian": 515214.64,
+        "disputed": 1397.51
+      },
+      "top_level_after": {
+        "russian": 86280.84,
+        "ukrainian": 515214.64,
+        "disputed": 1397.51
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-06",
+      "file": "data\\history\\2026-05-06.json",
+      "top_level_before": {
+        "russian": 104870.34,
+        "ukrainian": 497393.65,
+        "disputed": 1493.01
+      },
+      "top_level_after": {
+        "russian": 104006.34,
+        "ukrainian": 497393.65,
+        "disputed": 1493.01
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-07",
+      "file": "data\\history\\2026-05-07.json",
+      "top_level_before": {
+        "russian": 104874.73,
+        "ukrainian": 497387.44,
+        "disputed": 1494.83
+      },
+      "top_level_after": {
+        "russian": 104010.73,
+        "ukrainian": 497387.44,
+        "disputed": 1494.83
+      },
+      "oblast_changes": []
+    },
+    {
+      "date": "2026-05-08",
+      "file": "data\\history\\2026-05-08.json",
+      "top_level_before": {
+        "russian": 104878.55,
+        "ukrainian": 497381.79,
+        "disputed": 1496.66
+      },
+      "top_level_after": {
+        "russian": 104014.55,
+        "ukrainian": 497381.79,
+        "disputed": 1496.66
+      },
+      "oblast_changes": []
     }
   ],
   "final_status": "PASS"

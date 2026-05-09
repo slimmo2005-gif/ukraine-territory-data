@@ -1,7 +1,7 @@
 {
   "date": "2026-05-06",
   "source": "deepstate",
-  "total_russian_controlled_km2": 104870.34,
+  "total_russian_controlled_km2": 104006.34,
   "total_ukrainian_controlled_km2": 497393.65,
   "total_disputed_km2": 1493.01,
   "total_area_km2": 603757,
@@ -85,22 +85,12 @@
       "ukrainian_controlled_km2": 0,
       "disputed_controlled_km2": 0,
       "total_area_km2": 27000,
-      "russian_change_km2": -960.23,
+      "russian_change_km2": -1108.94,
       "ukrainian_change_km2": 0,
       "disputed_change_km2": 0
     },
     {
-      "oblast": "sevastopol",
-      "russian_controlled_km2": 864,
-      "ukrainian_controlled_km2": 0,
-      "disputed_controlled_km2": 0,
-      "total_area_km2": 864,
-      "russian_change_km2": -148.71,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
-    },
-    {
-      "oblast": "dnipro",
+      "oblast": "dnipropetrovsk",
       "russian_controlled_km2": 86.53,
       "ukrainian_controlled_km2": 31617.6,
       "disputed_controlled_km2": 218.87,

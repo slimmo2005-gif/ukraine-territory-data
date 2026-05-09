@@ -2,10 +2,15 @@ const TOLERANCE = 0.05;
 
 const CANONICAL_OBLASTS = [
   'donetsk', 'luhansk', 'kharkiv', 'zaporizhzhia', 'kherson', 'sumy', 'mykolaiv',
-  'crimea', 'sevastopol', 'dnipro', 'kyiv', 'odesa', 'lviv', 'vinnytsia', 'poltava',
+  'crimea', 'dnipropetrovsk', 'kyiv', 'odesa', 'lviv', 'vinnytsia', 'poltava',
   'cherkasy', 'zhytomyr', 'rivne', 'ivano-frankivsk', 'ternopil', 'khmelnytskyi',
   'volyn', 'zakarpattia', 'chernivtsi', 'kirovohrad', 'chernihiv'
 ];
+
+const OBLAST_ALIASES = {
+  dnipro: 'dnipropetrovsk',
+  sevastopol: 'crimea'
+};
 
 const PLAUSIBILITY_RULES = {
   crimea: { minRussianShare: 0.9, severity: 'fail', message: 'Crimea should remain overwhelmingly Russian-controlled' },
@@ -62,8 +67,29 @@ function normalizeOblastRow(row) {
   row.disputed_change_km2 = round2(row.disputed_change_km2);
 }
 
+function canonicalizeOblastRows(data) {
+  if (!Array.isArray(data?.oblasts)) return;
+  const merged = new Map();
+  for (const row of data.oblasts) {
+    const key = OBLAST_ALIASES[row.oblast] || row.oblast;
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, { ...row, oblast: key });
+      continue;
+    }
+    existing.russian_controlled_km2 = coerceNumber(existing.russian_controlled_km2) + coerceNumber(row.russian_controlled_km2);
+    existing.ukrainian_controlled_km2 = coerceNumber(existing.ukrainian_controlled_km2) + coerceNumber(row.ukrainian_controlled_km2);
+    existing.disputed_controlled_km2 = coerceNumber(existing.disputed_controlled_km2) + coerceNumber(row.disputed_controlled_km2);
+    existing.russian_change_km2 = coerceNumber(existing.russian_change_km2) + coerceNumber(row.russian_change_km2);
+    existing.ukrainian_change_km2 = coerceNumber(existing.ukrainian_change_km2) + coerceNumber(row.ukrainian_change_km2);
+    existing.disputed_change_km2 = coerceNumber(existing.disputed_change_km2) + coerceNumber(row.disputed_change_km2);
+    existing.total_area_km2 = Math.max(coerceNumber(existing.total_area_km2), coerceNumber(row.total_area_km2));
+  }
+  data.oblasts = Array.from(merged.values());
+}
+
 function enforceOccupiedEnclaveCompletion(data) {
-  const enclaveKeys = ['crimea', 'sevastopol'];
+  const enclaveKeys = ['crimea'];
   for (const key of enclaveKeys) {
     const row = data.oblasts.find((o) => o.oblast === key);
     if (!row) continue;
@@ -257,6 +283,7 @@ function recalculateTopLevelTotals(data) {
 export {
   CANONICAL_OBLASTS,
   TOLERANCE,
+  canonicalizeOblastRows,
   normalizeOblastRow,
   enforceOccupiedEnclaveCompletion,
   applyPlausibilityCorrections,
