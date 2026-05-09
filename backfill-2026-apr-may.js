@@ -3,13 +3,13 @@
  * Backfill daily DeepState snapshots for April/May 2026.
  * - Fetches closest Wayback snapshot per target day
  * - Converts raw snapshot into frontend schema via daily-extract-v2 processor
- * - Saves normalized files into data/history
- * - If yesterday is backfilled, regenerates today's file so daily deltas are accurate
+ * - Writes both data/ and data/history/ (processData reads yesterday from data/ only)
+ * - FORCE_REBACKFILL=1 overwrite; ONLY_MISSING=1 fetch gaps only; RETRY_ROUNDS=3
  */
 
 import fs from 'fs';
 import path from 'path';
-import { processData, saveData } from './daily-extract-v2.js';
+import { fetchDeepStateData, processData, saveData } from './daily-extract-v2.js';
 
 const HISTORY_DIR = './data/history';
 const RAW_DIR = './data/raw-history';
@@ -69,7 +69,7 @@ async function cdxLookup(date, windowDays) {
     filter: 'statuscode:200',
     from: dateToStamp(from.toISOString().slice(0, 10)),
     to: dateToStamp(to.toISOString().slice(0, 10)),
-    limit: '40'
+    limit: '100'
   });
 
   const url = `https://web.archive.org/cdx/search/cdx?${params.toString()}`;
@@ -94,21 +94,25 @@ async function fetchSnapshot(timestamp) {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
       'Accept': 'application/json'
     }
-  }, 20000);
+  }, 45000);
 
   if (!res.ok) throw new Error(`Snapshot ${timestamp} HTTP ${res.status}`);
   const contentType = res.headers.get('content-type') || '';
-  if (!contentType.includes('json')) {
-    const preview = (await res.text()).slice(0, 120);
-    throw new Error(`Snapshot ${timestamp} non-json (${contentType}): ${preview}`);
+  const text = await res.text();
+  let data;
+  if (contentType.includes('json')) {
+    data = JSON.parse(text);
+  } else {
+    const t = text.trim();
+    if (!t.startsWith('{')) throw new Error(`Snapshot ${timestamp} non-json (${contentType}): ${t.slice(0, 120)}`);
+    data = JSON.parse(t);
   }
-  const data = await res.json();
   if (!data?.map?.features?.length) throw new Error(`Snapshot ${timestamp} empty features`);
   return data;
 }
 
 async function fetchBestSnapshotForDate(date) {
-  for (const windowDays of [0, 1, 3, 7]) {
+  for (const windowDays of [0, 1, 3, 7, 14, 30]) {
     let candidates = [];
     try {
       candidates = await cdxLookup(date, windowDays);
@@ -117,14 +121,14 @@ async function fetchBestSnapshotForDate(date) {
     }
     if (candidates.length === 0) continue;
 
-    for (const c of candidates.slice(0, 8)) {
-      for (let attempt = 1; attempt <= 2; attempt++) {
+    for (const c of candidates.slice(0, 16)) {
+      for (let attempt = 1; attempt <= 3; attempt++) {
         try {
           const raw = await fetchSnapshot(c.timestamp);
           return { raw, timestamp: c.timestamp, sourceDate: dateFromStamp(c.timestamp.slice(0, 8)) };
         } catch (error) {
-          if (attempt === 2) break;
-          await new Promise((r) => setTimeout(r, 500 * attempt));
+          if (attempt === 3) break;
+          await new Promise((r) => setTimeout(r, 800 * attempt));
         }
       }
     }
@@ -132,12 +136,8 @@ async function fetchBestSnapshotForDate(date) {
   return null;
 }
 
-async function main() {
-  const today = new Date().toISOString().slice(0, 10);
-  const startDate = process.env.START_DATE || '2026-04-01';
-  const endDate = process.env.END_DATE || today;
-  const dates = generateDates(startDate, endDate);
-
+async function runPass(dates, today, opts) {
+  const { force, onlyMissing } = opts;
   const summary = {
     attempted: dates.length,
     success: [],
@@ -147,14 +147,26 @@ async function main() {
 
   for (const date of dates) {
     console.log(`Processing ${date}...`);
-    const historyPath = path.join(HISTORY_DIR, `${date}.json`);
-    if (fs.existsSync(historyPath) && date !== today) {
+    const mainDataPath = path.join('./data', `${date}.json`);
+
+    if (onlyMissing && fs.existsSync(mainDataPath)) {
+      summary.skipped.push(date);
+      continue;
+    }
+    if (!onlyMissing && fs.existsSync(mainDataPath) && date !== today && !force) {
       summary.skipped.push(date);
       continue;
     }
 
-    const result = await fetchBestSnapshotForDate(date);
+    let result;
+    if (date === today && process.env.WAYBACK_TODAY !== '1') {
+      const live = await fetchDeepStateData();
+      result = { raw: live, timestamp: 'live', sourceDate: today };
+    } else {
+      result = await fetchBestSnapshotForDate(date);
+    }
     if (!result) {
+      console.warn(`  No Wayback/live snapshot for ${date}`);
       summary.failed.push(date);
       continue;
     }
@@ -162,12 +174,19 @@ async function main() {
     const rawPath = path.join(RAW_DIR, `${date}.raw.json`);
     fs.writeFileSync(rawPath, JSON.stringify(result.raw, null, 2));
 
-    // Keep backfill logs readable while processing many dates.
+    let normalized;
     const originalLog = console.log;
     console.log = () => {};
-    const normalized = processData(result.raw, date);
+    try {
+      normalized = processData(result.raw, date);
+    } catch (e) {
+      console.log = originalLog;
+      console.warn(`  processData failed ${date}: ${e.message}`);
+      summary.failed.push(date);
+      continue;
+    }
     console.log = originalLog;
-    fs.writeFileSync(historyPath, JSON.stringify(normalized, null, 2));
+    saveData(normalized);
 
     summary.success.push({
       date,
@@ -176,43 +195,45 @@ async function main() {
     });
   }
 
-  // If yesterday was newly backfilled, regenerate today so change fields are based on it.
-  const yesterday = new Date();
-  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-  const yesterdayStr = yesterday.toISOString().slice(0, 10);
-  const todayStr = today;
-  const yesterdayWasAdded = summary.success.some((s) => s.date === yesterdayStr);
-  if (yesterdayWasAdded) {
-    const yHistory = path.join(HISTORY_DIR, `${yesterdayStr}.json`);
-    const yMain = path.join('./data', `${yesterdayStr}.json`);
-    if (fs.existsSync(yHistory)) {
-      fs.copyFileSync(yHistory, yMain);
-    }
+  return summary;
+}
 
-    const todayResult = await fetchBestSnapshotForDate(todayStr);
-    if (todayResult) {
-      const originalLog = console.log;
-      console.log = () => {};
-      const normalizedToday = processData(todayResult.raw, todayStr);
-      console.log = originalLog;
-      saveData(normalizedToday);
-      summary.success.push({
-        date: todayStr,
-        snapshot_timestamp: todayResult.timestamp,
-        source_date: todayResult.sourceDate,
-        regenerated_for_delta: true
-      });
-    }
+async function main() {
+  const today = new Date().toISOString().slice(0, 10);
+  const startDate = process.env.START_DATE || '2026-04-01';
+  const endDate = process.env.END_DATE || today;
+  const force =
+    process.env.FORCE_REBACKFILL === '1' ||
+    process.env.FORCE === '1' ||
+    process.env.FORCE_REBACKFILL === 'true';
+  // Avoid ONLY_MISSING sticking in the shell from an earlier run when forcing a redo.
+  const onlyMissing =
+    !force &&
+    (process.env.ONLY_MISSING === '1' || process.env.ONLY_MISSING === 'true');
+  const dates = generateDates(startDate, endDate);
+
+  let merged = await runPass(dates, today, { force, onlyMissing });
+  const maxRetries = Number(process.env.RETRY_ROUNDS || '3');
+  for (let r = 0; r < maxRetries && merged.failed.length > 0; r++) {
+    console.log(`\nRetry round ${r + 1} for ${merged.failed.length} failed dates...`);
+    await new Promise((res) => setTimeout(res, 3000));
+    const failedSet = new Set(merged.failed);
+    merged.failed = [];
+    const retryDates = dates.filter((d) => failedSet.has(d));
+    const round = await runPass(retryDates, today, { force: true, onlyMissing: false });
+    merged.success.push(...round.success);
+    merged.failed = round.failed;
+    merged.skipped.push(...round.skipped);
   }
 
   const reportPath = `./backfill_2026_apr_may_report_${startDate}_to_${endDate}.json`;
-  fs.writeFileSync(reportPath, JSON.stringify(summary, null, 2));
+  fs.writeFileSync(reportPath, JSON.stringify(merged, null, 2));
 
   console.log('Backfill complete');
-  console.log(`Attempted: ${summary.attempted}`);
-  console.log(`Success: ${summary.success.length}`);
-  console.log(`Failed: ${summary.failed.length}`);
-  console.log(`Skipped: ${summary.skipped.length}`);
+  console.log(`Attempted: ${merged.attempted}`);
+  console.log(`Success: ${merged.success.length}`);
+  console.log(`Failed: ${merged.failed.length}`);
+  console.log(`Skipped: ${merged.skipped.length}`);
   console.log(`Report: ${reportPath}`);
 }
 

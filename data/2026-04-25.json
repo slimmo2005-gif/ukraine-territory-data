@@ -1,23 +1,23 @@
 {
-  "date": "2026-05-02",
+  "date": "2026-04-25",
   "source": "deepstate",
-  "total_russian_controlled_km2": 115808.13,
-  "total_ukrainian_controlled_km2": 486459.69,
-  "total_disputed_km2": 1489.18,
+  "total_russian_controlled_km2": 115797.53,
+  "total_ukrainian_controlled_km2": 486462.04,
+  "total_disputed_km2": 1497.43,
   "total_area_km2": 603757,
-  "russian_change_km2": 0,
-  "ukrainian_change_km2": 0,
-  "disputed_change_km2": 0,
+  "russian_change_km2": 34.05,
+  "ukrainian_change_km2": -42.93,
+  "disputed_change_km2": 8.88,
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 20958.34,
-      "ukrainian_controlled_km2": 5056.95,
-      "disputed_controlled_km2": 501.71,
+      "russian_controlled_km2": 20950.81,
+      "ukrainian_controlled_km2": 5059.3,
+      "disputed_controlled_km2": 506.89,
       "total_area_km2": 26517,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 12.11,
+      "ukrainian_change_km2": -27.47,
+      "disputed_change_km2": 15.36
     },
     {
       "oblast": "luhansk",
@@ -31,13 +31,13 @@
     },
     {
       "oblast": "kharkiv",
-      "russian_controlled_km2": 1447.62,
+      "russian_controlled_km2": 1444.55,
       "ukrainian_controlled_km2": 29749.29,
-      "disputed_controlled_km2": 218.09,
+      "disputed_controlled_km2": 221.16,
       "total_area_km2": 31415,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 9.81,
+      "ukrainian_change_km2": -9.16,
+      "disputed_change_km2": -0.65
     },
     {
       "oblast": "zaporizhzhia",
@@ -45,9 +45,9 @@
       "ukrainian_controlled_km2": 6565.17,
       "disputed_controlled_km2": 244.5,
       "total_area_km2": 27180,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 12.13,
+      "ukrainian_change_km2": -6.3,
+      "disputed_change_km2": -5.83
     },
     {
       "oblast": "kherson",
@@ -260,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-09T12:09:23.502Z"
+  "last_updated": "2026-05-09T12:09:23.469Z"
 }

@@ -1,32 +1,32 @@
 {
   "date": "2026-05-07",
   "source": "deepstate",
-  "total_russian_controlled_km2": 104010.73,
-  "total_ukrainian_controlled_km2": 497387.44,
+  "total_russian_controlled_km2": 115822.81,
+  "total_ukrainian_controlled_km2": 486439.35,
   "total_disputed_km2": 1494.83,
   "total_area_km2": 603757,
-  "russian_change_km2": -6111.51,
-  "ukrainian_change_km2": 66.36,
+  "russian_change_km2": 4.39,
+  "ukrainian_change_km2": -6.21,
   "disputed_change_km2": 1.82,
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 12758.36,
-      "ukrainian_controlled_km2": 13259.43,
+      "russian_controlled_km2": 20967.21,
+      "ukrainian_controlled_km2": 5050.58,
       "disputed_controlled_km2": 499.21,
       "total_area_km2": 26517,
       "russian_change_km2": 1.93,
-      "ukrainian_change_km2": -1.4,
+      "ukrainian_change_km2": -2.01,
       "disputed_change_km2": 0.08
     },
     {
       "oblast": "luhansk",
-      "russian_controlled_km2": 22665.34,
-      "ukrainian_controlled_km2": 3999.76,
+      "russian_controlled_km2": 25910.21,
+      "ukrainian_controlled_km2": 754.89,
       "disputed_controlled_km2": 18.9,
       "total_area_km2": 26684,
-      "russian_change_km2": -5006.96,
-      "ukrainian_change_km2": 70.8,
+      "russian_change_km2": 0,
+      "ukrainian_change_km2": 0,
       "disputed_change_km2": 0
     },
     {
@@ -56,13 +56,13 @@
       "disputed_controlled_km2": 211.82,
       "total_area_km2": 28461,
       "russian_change_km2": 0,
-      "ukrainian_change_km2": -3.04,
+      "ukrainian_change_km2": -3.19,
       "disputed_change_km2": 3.19
     },
     {
       "oblast": "sumy",
       "russian_controlled_km2": 238.88,
-      "ukrainian_controlled_km2": 23513.3,
+      "ukrainian_controlled_km2": 23513.29,
       "disputed_controlled_km2": 81.82,
       "total_area_km2": 23834,
       "russian_change_km2": 0,
@@ -81,11 +81,11 @@
     },
     {
       "oblast": "crimea",
-      "russian_controlled_km2": 27000,
+      "russian_controlled_km2": 27864,
       "ukrainian_controlled_km2": 0,
       "disputed_controlled_km2": 0,
-      "total_area_km2": 27000,
-      "russian_change_km2": -1108.94,
+      "total_area_km2": 27864,
+      "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
       "disputed_change_km2": 0
     },
@@ -96,7 +96,7 @@
       "disputed_controlled_km2": 217.42,
       "total_area_km2": 31923,
       "russian_change_km2": 2.46,
-      "ukrainian_change_km2": 0,
+      "ukrainian_change_km2": -1.01,
       "disputed_change_km2": -1.45
     },
     {
@@ -111,8 +111,8 @@
     },
     {
       "oblast": "odesa",
-      "russian_controlled_km2": 448.63,
-      "ukrainian_controlled_km2": 32861.37,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 33310,
       "disputed_controlled_km2": 0,
       "total_area_km2": 33310,
       "russian_change_km2": 0,
@@ -131,8 +131,8 @@
     },
     {
       "oblast": "vinnytsia",
-      "russian_controlled_km2": 57.01,
-      "ukrainian_controlled_km2": 26455.99,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 26513,
       "disputed_controlled_km2": 0,
       "total_area_km2": 26513,
       "russian_change_km2": 0,
@@ -260,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-07T21:04:29.663Z"
+  "last_updated": "2026-05-09T12:09:23.524Z"
 }
