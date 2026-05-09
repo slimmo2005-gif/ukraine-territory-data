@@ -5,8 +5,8 @@
   "total_ukrainian_controlled_km2": 486433.69,
   "total_disputed_km2": 1496.66,
   "total_area_km2": 603757,
-  "russian_change_km2": 3.83,
-  "ukrainian_change_km2": -5.66,
+  "russian_change_km2": -1109.49,
+  "ukrainian_change_km2": 1107.66,
   "disputed_change_km2": 1.83,
   "oblasts": [
     {
@@ -15,9 +15,9 @@
       "ukrainian_controlled_km2": 5044.92,
       "disputed_controlled_km2": 501.04,
       "total_area_km2": 26517,
-      "russian_change_km2": 3.83,
-      "ukrainian_change_km2": -5.66,
-      "disputed_change_km2": 1.83
+      "russian_change_km2": 3.8300000000017462,
+      "ukrainian_change_km2": -5.6599999999998545,
+      "disputed_change_km2": 1.830000000000041
     },
     {
       "oblast": "luhansk",
@@ -85,8 +85,8 @@
       "ukrainian_controlled_km2": 0,
       "disputed_controlled_km2": 0,
       "total_area_km2": 27864,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
+      "russian_change_km2": -1113.3199999999997,
+      "ukrainian_change_km2": 1113.32,
       "disputed_change_km2": 0
     },
     {
@@ -260,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-09T12:23:07.633Z"
+  "last_updated": "2026-05-09T20:42:36.524Z"
 }
