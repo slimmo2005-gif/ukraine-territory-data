@@ -12,15 +12,6 @@ function round2(n) {
   return Math.round(Number(n) * 100) / 100;
 }
 
-function generateWeeklyAnchorsUTC(startDate, endDate) {
-  const dates = [];
-  const end = new Date(`${endDate}T00:00:00Z`);
-  for (let d = new Date(`${startDate}T00:00:00Z`); d <= end; d.setUTCDate(d.getUTCDate() + 7)) {
-    dates.push(d.toISOString().slice(0, 10));
-  }
-  return dates;
-}
-
 function applyDeltas(cur, prev) {
   cur.russian_change_km2 = round2(
     (cur.total_russian_controlled_km2 || 0) - (prev.total_russian_controlled_km2 || 0)
@@ -46,30 +37,35 @@ function applyDeltas(cur, prev) {
 }
 
 /**
+ * Walk existing `YYYY-MM-DD.json` files sorted by date (not a theoretical +7 grid), so
+ * week-over-week deltas stay correct when 2026 anchors (e.g. Jan 1) do not line up with
+ * a chain that started on a different START_DATE (e.g. 2024-01-01).
+ *
  * @param {string} weeklyDir
- * @param {string} startDate YYYY-MM-DD
- * @param {string} endDate YYYY-MM-DD
+ * @param {string} startDate YYYY-MM-DD — only files with date >= this are updated (chain still uses prior file if present)
+ * @param {string} endDate YYYY-MM-DD — only files with date <= this are updated
  * @returns {number} number of files updated
  */
 export function recomputeWeeklyDeltasForDir(weeklyDir, startDate, endDate) {
-  const anchors = generateWeeklyAnchorsUTC(startDate, endDate);
-  let updated = 0;
-  let prevPath = null;
+  const allDates = fs
+    .readdirSync(weeklyDir)
+    .filter((f) => /^\d{4}-\d{2}-\d{2}\.json$/.test(f))
+    .map((f) => f.slice(0, 10))
+    .sort();
 
-  for (const date of anchors) {
+  let updated = 0;
+  /** @type {object|null} */
+  let prev = null;
+
+  for (const date of allDates) {
     const curPath = path.join(weeklyDir, `${date}.json`);
-    if (!fs.existsSync(curPath)) {
-      prevPath = null;
-      continue;
-    }
     const cur = JSON.parse(fs.readFileSync(curPath, 'utf8'));
-    if (prevPath && fs.existsSync(prevPath)) {
-      const prev = JSON.parse(fs.readFileSync(prevPath, 'utf8'));
+    if (prev && date >= startDate && date <= endDate) {
       applyDeltas(cur, prev);
       fs.writeFileSync(curPath, JSON.stringify(cur, null, 2));
       updated++;
     }
-    prevPath = curPath;
+    prev = cur;
   }
   return updated;
 }

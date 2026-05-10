@@ -10,6 +10,7 @@
 import fs from 'fs';
 import path from 'path';
 import { processData } from './daily-extract-v2.js';
+import { recomputeWeeklyDeltasForDir } from './recompute-weekly-deltas.js';
 
 const WEEKLY_DIR = './data/history/weekly';
 const RAW_DIR = './data/raw-history/weekly';
@@ -267,56 +268,6 @@ function saveWeeklyJson(data) {
   return file;
 }
 
-function round2(n) {
-  return Math.round(Number(n) * 100) / 100;
-}
-
-function applyWeekOverWeekDeltas(cur, prev) {
-  cur.russian_change_km2 = round2(
-    (cur.total_russian_controlled_km2 || 0) - (prev.total_russian_controlled_km2 || 0)
-  );
-  cur.ukrainian_change_km2 = round2(
-    (cur.total_ukrainian_controlled_km2 || 0) - (prev.total_ukrainian_controlled_km2 || 0)
-  );
-  cur.disputed_change_km2 = round2((cur.total_disputed_km2 || 0) - (prev.total_disputed_km2 || 0));
-
-  const prevBy = new Map((prev.oblasts || []).map((o) => [o.oblast, o]));
-  for (const o of cur.oblasts || []) {
-    const p = prevBy.get(o.oblast);
-    if (!p) continue;
-    o.russian_change_km2 = round2((o.russian_controlled_km2 || 0) - (p.russian_controlled_km2 || 0));
-    o.ukrainian_change_km2 = round2(
-      (o.ukrainian_controlled_km2 || 0) - (p.ukrainian_controlled_km2 || 0)
-    );
-    o.disputed_change_km2 = round2(
-      (o.disputed_controlled_km2 || 0) - (p.disputed_controlled_km2 || 0)
-    );
-  }
-  cur.last_updated = new Date().toISOString();
-}
-
-function recomputeWeeklyDeltasInRange(weeklyDir, startDate, endDate) {
-  const anchors = generateWeeklyAnchorsUTC(startDate, endDate);
-  let updated = 0;
-  let prevPath = null;
-  for (const date of anchors) {
-    const curPath = path.join(weeklyDir, `${date}.json`);
-    if (!fs.existsSync(curPath)) {
-      prevPath = null;
-      continue;
-    }
-    const cur = JSON.parse(fs.readFileSync(curPath, 'utf8'));
-    if (prevPath && fs.existsSync(prevPath)) {
-      const prev = JSON.parse(fs.readFileSync(prevPath, 'utf8'));
-      applyWeekOverWeekDeltas(cur, prev);
-      fs.writeFileSync(curPath, JSON.stringify(cur, null, 2));
-      updated++;
-    }
-    prevPath = curPath;
-  }
-  return updated;
-}
-
 async function main() {
   const startDate = process.env.START_DATE || '2026-01-01';
   let endDate = process.env.END_DATE || new Date().toISOString().slice(0, 10);
@@ -473,8 +424,9 @@ async function main() {
   }
 
   if (anchors.length > 0) {
-    const updated = recomputeWeeklyDeltasInRange(WEEKLY_DIR, anchors[0], endDate);
-    console.log(`Recomputed week-over-week deltas for ${updated} weekly files.`);
+    const deltaEnd = endDate > todayUtc ? endDate : todayUtc;
+    const updated = recomputeWeeklyDeltasForDir(path.resolve(WEEKLY_DIR), startDate, deltaEnd);
+    console.log(`Recomputed week-over-week deltas for ${updated} weekly files (${startDate}…${deltaEnd}).`);
   }
 
   const reportPath = './weekly_build_report.json';
