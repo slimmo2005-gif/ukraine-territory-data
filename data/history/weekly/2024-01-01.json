@@ -5,9 +5,9 @@
   "total_ukrainian_controlled_km2": 495030.21,
   "total_disputed_km2": 493.46,
   "total_area_km2": 603757,
-  "russian_change_km2": 0,
-  "ukrainian_change_km2": 0,
-  "disputed_change_km2": 0,
+  "russian_change_km2": 15.16,
+  "ukrainian_change_km2": -9.98,
+  "disputed_change_km2": -5.17,
   "oblasts": [
     {
       "oblast": "donetsk",
@@ -15,9 +15,9 @@
       "ukrainian_controlled_km2": 11272.32,
       "disputed_controlled_km2": 147.51,
       "total_area_km2": 26517,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 3.51,
+      "ukrainian_change_km2": -3.41,
+      "disputed_change_km2": -0.09
     },
     {
       "oblast": "luhansk",
@@ -25,9 +25,9 @@
       "ukrainian_controlled_km2": 983.9,
       "disputed_controlled_km2": 47.73,
       "total_area_km2": 26684,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 0.57,
+      "ukrainian_change_km2": -0.27,
+      "disputed_change_km2": -0.3
     },
     {
       "oblast": "kharkiv",
@@ -35,9 +35,9 @@
       "ukrainian_controlled_km2": 30774.99,
       "disputed_controlled_km2": 21.559999999999995,
       "total_area_km2": 31415,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": -1.45,
+      "ukrainian_change_km2": 0.37,
+      "disputed_change_km2": 1.08
     },
     {
       "oblast": "zaporizhzhia",
@@ -45,9 +45,9 @@
       "ukrainian_controlled_km2": 7508.72,
       "disputed_controlled_km2": 93.16,
       "total_area_km2": 27180,
-      "russian_change_km2": 0,
-      "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "russian_change_km2": 12.37,
+      "ukrainian_change_km2": -6.67,
+      "disputed_change_km2": -5.7
     },
     {
       "oblast": "kherson",
@@ -55,9 +55,9 @@
       "ukrainian_controlled_km2": 9467.82,
       "disputed_controlled_km2": 183.5,
       "total_area_km2": 28461,
-      "russian_change_km2": 0,
+      "russian_change_km2": 0.16,
       "ukrainian_change_km2": 0,
-      "disputed_change_km2": 0
+      "disputed_change_km2": -0.16
     },
     {
       "oblast": "sumy",
@@ -260,7 +260,7 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-10T02:30:12.034Z",
+  "last_updated": "2026-05-10T07:51:44.423Z",
   "granularity": "weekly",
   "snapshot_source": "wayback",
   "wayback_timestamp": "20240102001925",

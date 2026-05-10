@@ -375,8 +375,9 @@ async function main() {
     }
   }
 
-  // Re-run failed anchors once (Wayback can be flaky)
-  const failedOnce = [...summary.failed];
+  // Re-run failed anchors once (Wayback can be flaky). Process newest→oldest so
+  // weekly_nearest bridges can copy from an already-retried neighbor week.
+  const failedOnce = [...summary.failed].sort((a, b) => b.localeCompare(a));
   summary.failed = [];
   for (const date of failedOnce) {
     const outPath = path.join(WEEKLY_DIR, `${date}.json`);
