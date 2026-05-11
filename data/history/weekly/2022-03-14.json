@@ -260,9 +260,10 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-10T07:51:44.377Z",
+  "last_updated": "2026-05-10T12:46:46.671Z",
   "granularity": "weekly",
-  "snapshot_source": "wayback",
-  "wayback_timestamp": "20220510044041",
-  "wayback_capture_date": "2022-05-10"
+  "snapshot_source": "weekly_nearest",
+  "wayback_chronological_slack_days": 60,
+  "derived_from_weekly": "2022-03-07",
+  "weekly_bridge_day_offset": 7
 }

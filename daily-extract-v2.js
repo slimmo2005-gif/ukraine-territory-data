@@ -521,4 +521,4 @@ if (invokedFile && path.resolve(thisFile) === invokedFile) {
   main();
 }
 
-export { fetchDeepStateData, processData, saveData, main };
+export { fetchDeepStateData, processData, saveData, main, OBLASTS };

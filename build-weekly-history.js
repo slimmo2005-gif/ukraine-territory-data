@@ -4,6 +4,9 @@
  * - Anchors: every 7 days UTC starting START_DATE (default 2026-01-01) through END_DATE (default today).
  * - Output: data/history/weekly/YYYY-MM-DD.json only (does not touch daily data/history/*.json).
  * - FORCE_WEEKLY=1 overwrite; ONLY_MISSING=1 skip existing weekly files; MAX_WEEKS=N test cap
+ * - WEEKLY_ANCHORS=comma list to process only those dates (with FORCE for refresh)
+ * CDX has no DeepState /api/history/last JSON before 2022-05-10; pre–15 Feb anchors use a CNN/Wikipedia
+ * ~42k km² baseline; later winter/spring anchors use slack-picked earliest captures (see wayback_* metadata).
  * After a successful run, week-over-week deltas are recomputed across consecutive weekly files.
  */
 
@@ -11,6 +14,7 @@ import fs from 'fs';
 import path from 'path';
 import { processData } from './daily-extract-v2.js';
 import { recomputeWeeklyDeltasForDir } from './recompute-weekly-deltas.js';
+import { buildPreInvasionWeeklySnapshot } from './preinvasion-baseline.js';
 
 const WEEKLY_DIR = './data/history/weekly';
 const RAW_DIR = './data/raw-history/weekly';
@@ -26,6 +30,16 @@ function dateToStamp(date) {
 function dateFromStamp(stamp) {
   return `${stamp.slice(0, 4)}-${stamp.slice(4, 6)}-${stamp.slice(6, 8)}`;
 }
+
+/** Last calendar day (UTC) of the ISO week starting at `anchorDate` (7-day grid: anchor … anchor+6). */
+function anchorWeekEndYmd(anchorDate) {
+  const d = new Date(`${anchorDate}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 6);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Slack (days after anchor week end) for Wayback capture dates when CDX is sparse (early war). */
+const EARLY_WAR_CAPTURE_SLACKS = [0, 14, 30, 60, 75, 90, 120, 200];
 
 /** Inclusive of start; each anchor is 00:00 UTC; +7 days until > end */
 function generateWeeklyAnchorsUTC(startDate, endDate) {
@@ -116,6 +130,41 @@ async function fetchSnapshot(timestamp) {
   return data;
 }
 
+/**
+ * Try CDX candidates in chronological order: strict week end, then +slack days (early 2022 only),
+ * closest capture to anchor first within each slack tier.
+ */
+async function tryFetchFirstWorkingSnapshot(date, candidates) {
+  if (!candidates?.length) return null;
+  const useSlack = date < '2022-07-01';
+  const slacks = useSlack ? EARLY_WAR_CAPTURE_SLACKS : [0];
+  for (const slack of slacks) {
+    const end = new Date(`${anchorWeekEndYmd(date)}T00:00:00Z`);
+    end.setUTCDate(end.getUTCDate() + slack);
+    const capMax = end.toISOString().slice(0, 10);
+    const pool = candidates.filter((c) => dateFromStamp(c.timestamp.slice(0, 8)) <= capMax);
+    if (!pool.length) continue;
+    const sorted = sortByDistance(date, pool);
+    for (const c of sorted.slice(0, 40)) {
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const raw = await fetchSnapshot(c.timestamp);
+          return {
+            raw,
+            timestamp: c.timestamp,
+            sourceDate: dateFromStamp(c.timestamp.slice(0, 8)),
+            chronological_slack_days: slack
+          };
+        } catch {
+          if (attempt === 3) break;
+          await new Promise((r) => setTimeout(r, 800 * attempt));
+        }
+      }
+    }
+  }
+  return null;
+}
+
 async function fetchBestSnapshotForDate(date) {
   for (const windowDays of [0, 1, 3, 7, 14, 30]) {
     let candidates = [];
@@ -125,18 +174,8 @@ async function fetchBestSnapshotForDate(date) {
       continue;
     }
     if (candidates.length === 0) continue;
-
-    for (const c of candidates.slice(0, 16)) {
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const raw = await fetchSnapshot(c.timestamp);
-          return { raw, timestamp: c.timestamp, sourceDate: dateFromStamp(c.timestamp.slice(0, 8)) };
-        } catch {
-          if (attempt === 3) break;
-          await new Promise((r) => setTimeout(r, 800 * attempt));
-        }
-      }
-    }
+    const hit = await tryFetchFirstWorkingSnapshot(date, candidates);
+    if (hit) return hit;
   }
   return null;
 }
@@ -174,19 +213,25 @@ async function fetchBestSnapshotWholeYear(date) {
   } catch {
     return null;
   }
-  if (candidates.length === 0) return null;
-  for (const c of candidates.slice(0, 24)) {
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        const raw = await fetchSnapshot(c.timestamp);
-        return { raw, timestamp: c.timestamp, sourceDate: dateFromStamp(c.timestamp.slice(0, 8)) };
-      } catch {
-        if (attempt === 3) break;
-        await new Promise((r) => setTimeout(r, 800 * attempt));
-      }
+  return tryFetchFirstWorkingSnapshot(date, candidates);
+}
+
+function weeklyBridgeAllowed(anchorDate, bridgePath) {
+  if (anchorDate <= '2022-02-20') return true;
+  try {
+    const j = JSON.parse(fs.readFileSync(bridgePath, 'utf8'));
+    if (j.snapshot_source === 'preinvasion_baseline') return false;
+    if (j.preinvasion_baseline_note || j.preinvasion_baseline_total_russian_km2 != null) return false;
+    // weekly_nearest copies can inherit ~42k km² CNN baseline without keeping snapshot_source
+    const ru = j.total_russian_controlled_km2;
+    const dis = j.total_disputed_km2 || 0;
+    if (typeof ru === 'number' && Math.abs(ru - 42000) < 80 && dis < 500 && anchorDate >= '2022-02-21') {
+      return false;
     }
+  } catch {
+    return true;
   }
-  return null;
+  return true;
 }
 
 function findNearestDailyJson(anchorDate, dataDir, maxDays) {
@@ -291,6 +336,16 @@ async function main() {
 
   let anchors = generateWeeklyAnchorsUTC(startDate, endDate);
   if (maxWeeks > 0) anchors = anchors.slice(0, maxWeeks);
+  const anchorAllow = process.env.WEEKLY_ANCHORS?.trim();
+  if (anchorAllow) {
+    const allow = new Set(
+      anchorAllow
+        .split(/[\s,]+/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+    );
+    anchors = anchors.filter((a) => allow.has(a));
+  }
 
   const summary = { attempted: anchors.length, success: [], failed: [], skipped: [] };
 
@@ -311,6 +366,7 @@ async function main() {
       continue;
     }
 
+    let saved = false;
     let result = await fetchBestSnapshotForDate(date);
     if (!result) {
       console.log('  Trying whole-year CDX window…');
@@ -337,26 +393,44 @@ async function main() {
         normalized.snapshot_source = 'wayback';
         normalized.wayback_timestamp = result.timestamp;
         normalized.wayback_capture_date = result.sourceDate;
+        if (result.chronological_slack_days > 0) {
+          normalized.wayback_chronological_slack_days = result.chronological_slack_days;
+        }
 
         saveWeeklyJson(normalized);
-        console.log(`  ✓ wayback ${result.timestamp} (capture ~${result.sourceDate})`);
+        const slackNote = result.chronological_slack_days > 0 ? ` slack≤${result.chronological_slack_days}d` : '';
+        console.log(`  ✓ wayback ${result.timestamp} (capture ~${result.sourceDate})${slackNote}`);
         summary.success.push({ date, wayback_timestamp: result.timestamp });
+        saved = true;
       }
     }
 
-    if (!result && useDailyBridge) {
+    if (!saved && date <= '2022-02-14') {
+      saveWeeklyJson(buildPreInvasionWeeklySnapshot(date));
+      console.log('  ✓ pre-invasion baseline (~42,000 km² Russian incl. Crimea + proxy Donbas, see Wikipedia/CNN)');
+      summary.success.push({ date, preinvasion_baseline: true });
+      saved = true;
+    }
+
+    if (!saved && useDailyBridge) {
       const bridge = findNearestDailyJson(date, dataDir, maxBridgeDays);
       if (bridge) {
         const normalized = weeklySnapshotFromNearestDaily(date, bridge);
         saveWeeklyJson(normalized);
         console.log(`  ✓ daily bridge ${bridge.dailyDate} (±${bridge.dayOffset}d) → weekly anchor`);
         summary.success.push({ date, derived_from_daily: bridge.dailyDate });
+        saved = true;
       } else if (useWeeklyBridge) {
         const wk = findNearestWeeklyJson(date, WEEKLY_DIR, maxWeeklyBridgeDays);
-        if (wk) {
+        if (wk && weeklyBridgeAllowed(date, wk.path)) {
           saveWeeklyJson(weeklySnapshotFromNearestWeekly(date, wk));
           console.log(`  ✓ weekly bridge ${wk.weeklyDate} (±${wk.dayOffset}d) → anchor`);
           summary.success.push({ date, derived_from_weekly: wk.weeklyDate });
+          saved = true;
+        } else if (wk && !weeklyBridgeAllowed(date, wk.path)) {
+          console.warn(`  Skip weekly bridge from pre-invasion snapshot for ${date}`);
+          console.warn(`  No Wayback / daily / weekly bridge for ${date}`);
+          summary.failed.push(date);
         } else {
           console.warn(`  No Wayback / daily / weekly bridge for ${date}`);
           summary.failed.push(date);
@@ -365,7 +439,7 @@ async function main() {
         console.warn(`  No Wayback or daily bridge for ${date}`);
         summary.failed.push(date);
       }
-    } else if (!result) {
+    } else if (!saved) {
       console.warn(`  No snapshot for ${date}`);
       summary.failed.push(date);
     }
@@ -400,10 +474,18 @@ async function main() {
         normalized.snapshot_source = 'wayback';
         normalized.wayback_timestamp = result.timestamp;
         normalized.wayback_capture_date = result.sourceDate;
+        if (result.chronological_slack_days > 0) {
+          normalized.wayback_chronological_slack_days = result.chronological_slack_days;
+        }
         saveWeeklyJson(normalized);
         summary.success.push({ date, wayback_timestamp: result.timestamp, retry: true });
         continue;
       }
+    }
+    if (date <= '2022-02-14') {
+      saveWeeklyJson(buildPreInvasionWeeklySnapshot(date));
+      summary.success.push({ date, preinvasion_baseline: true, retry: true });
+      continue;
     }
     if (useDailyBridge) {
       const bridge = findNearestDailyJson(date, dataDir, maxBridgeDays);
@@ -415,7 +497,7 @@ async function main() {
     }
     if (useWeeklyBridge) {
       const wk = findNearestWeeklyJson(date, WEEKLY_DIR, maxWeeklyBridgeDays);
-      if (wk) {
+      if (wk && weeklyBridgeAllowed(date, wk.path)) {
         saveWeeklyJson(weeklySnapshotFromNearestWeekly(date, wk));
         summary.success.push({ date, derived_from_weekly: wk.weeklyDate, retry: true });
         continue;
@@ -426,8 +508,9 @@ async function main() {
 
   if (anchors.length > 0) {
     const deltaEnd = endDate > todayUtc ? endDate : todayUtc;
-    const updated = recomputeWeeklyDeltasForDir(path.resolve(WEEKLY_DIR), startDate, deltaEnd);
-    console.log(`Recomputed week-over-week deltas for ${updated} weekly files (${startDate}…${deltaEnd}).`);
+    const deltaStart = anchors[0];
+    const updated = recomputeWeeklyDeltasForDir(path.resolve(WEEKLY_DIR), deltaStart, deltaEnd);
+    console.log(`Recomputed week-over-week deltas for ${updated} weekly files (${deltaStart}…${deltaEnd}).`);
   }
 
   const reportPath = './weekly_build_report.json';

@@ -1,9 +1,9 @@
 {
   "date": "2022-02-07",
   "source": "deepstate",
-  "total_russian_controlled_km2": 70144.15,
-  "total_ukrainian_controlled_km2": 532570.87,
-  "total_disputed_km2": 1041.97,
+  "total_russian_controlled_km2": 42000,
+  "total_ukrainian_controlled_km2": 561757,
+  "total_disputed_km2": 0,
   "total_area_km2": 603757,
   "russian_change_km2": 0,
   "ukrainian_change_km2": 0,
@@ -11,9 +11,9 @@
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 10555.3,
-      "ukrainian_controlled_km2": 15832.94,
-      "disputed_controlled_km2": 128.76,
+      "russian_controlled_km2": 7045.81,
+      "ukrainian_controlled_km2": 19471.19,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 26517,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -21,9 +21,9 @@
     },
     {
       "oblast": "luhansk",
-      "russian_controlled_km2": 24750.7,
-      "ukrainian_controlled_km2": 1898.71,
-      "disputed_controlled_km2": 34.58,
+      "russian_controlled_km2": 7090.19,
+      "ukrainian_controlled_km2": 19593.81,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 26684,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -31,9 +31,9 @@
     },
     {
       "oblast": "kharkiv",
-      "russian_controlled_km2": 6174.51,
-      "ukrainian_controlled_km2": 24698.02,
-      "disputed_controlled_km2": 542.4699999999999,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 31415,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 31415,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -42,8 +42,8 @@
     {
       "oblast": "zaporizhzhia",
       "russian_controlled_km2": 0,
-      "ukrainian_controlled_km2": 26931.23,
-      "disputed_controlled_km2": 248.77,
+      "ukrainian_controlled_km2": 27180,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 27180,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -51,9 +51,9 @@
     },
     {
       "oblast": "kherson",
-      "russian_controlled_km2": 283.93,
-      "ukrainian_controlled_km2": 28108.93,
-      "disputed_controlled_km2": 68.14,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 28461,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 28461,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -72,8 +72,8 @@
     {
       "oblast": "mykolaiv",
       "russian_controlled_km2": 0,
-      "ukrainian_controlled_km2": 24578.75,
-      "disputed_controlled_km2": 19.25,
+      "ukrainian_controlled_km2": 24598,
+      "disputed_controlled_km2": 0,
       "total_area_km2": 24598,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -111,8 +111,8 @@
     },
     {
       "oblast": "odesa",
-      "russian_controlled_km2": 458.89,
-      "ukrainian_controlled_km2": 32851.11,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 33310,
       "disputed_controlled_km2": 0,
       "total_area_km2": 33310,
       "russian_change_km2": 0,
@@ -131,8 +131,8 @@
     },
     {
       "oblast": "vinnytsia",
-      "russian_controlled_km2": 56.82,
-      "ukrainian_controlled_km2": 26456.18,
+      "russian_controlled_km2": 0,
+      "ukrainian_controlled_km2": 26513,
       "disputed_controlled_km2": 0,
       "total_area_km2": 26513,
       "russian_change_km2": 0,
@@ -260,9 +260,9 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-10T07:51:40.051Z",
+  "last_updated": "2026-05-10T12:28:52.959Z",
   "granularity": "weekly",
-  "snapshot_source": "weekly_nearest",
-  "derived_from_weekly": "2022-02-14",
-  "weekly_bridge_day_offset": 7
+  "snapshot_source": "preinvasion_baseline",
+  "preinvasion_baseline_note": "Schematic baseline: Wikipedia summary citing CNN (~42,000 km² Russian-controlled UA territory on 22 Feb 2022). Crimea = full oblast polygon in this dataset; Donetsk/Luhansk = remainder (~separatist-held).",
+  "preinvasion_baseline_total_russian_km2": 42000
 }

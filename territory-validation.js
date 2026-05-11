@@ -126,7 +126,13 @@ function adjustRussianShare(row, minShare, maxShare) {
   }
 }
 
+/** Only weeks that use the schematic CNN/Wikipedia pre-invasion baseline (not live geometry). */
+function isPreInvasionDate(ymd) {
+  return typeof ymd === 'string' && ymd.length >= 10 && ymd.slice(0, 10) <= '2022-02-14';
+}
+
 function applyPlausibilityCorrections(data) {
+  if (isPreInvasionDate(data?.date)) return [];
   const corrections = [];
   for (const row of data.oblasts) {
     const rule = PLAUSIBILITY_RULES[row.oblast];
@@ -231,9 +237,11 @@ function validateDailyData(data, previousDayData = null) {
     hardFailures.push({ type: 'total_mismatch', field: 'total_disputed_km2', expected: round2(sums.d), actual: data.total_disputed_km2 });
   }
 
+  const skipPlausibility = isPreInvasionDate(data?.date);
+
   for (const row of data.oblasts) {
     const rule = PLAUSIBILITY_RULES[row.oblast];
-    if (!rule) continue;
+    if (!rule || skipPlausibility) continue;
     const controllable = Math.max(0.0001, row.total_area_km2 - row.disputed_controlled_km2);
     const russianShare = row.russian_controlled_km2 / controllable;
     if (typeof rule.minRussianShare === 'number' && russianShare < rule.minRussianShare) {
@@ -283,6 +291,7 @@ function recalculateTopLevelTotals(data) {
 export {
   CANONICAL_OBLASTS,
   TOLERANCE,
+  isPreInvasionDate,
   canonicalizeOblastRows,
   normalizeOblastRow,
   enforceOccupiedEnclaveCompletion,

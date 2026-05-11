@@ -1,2 +1,4 @@
 data/raw-history/
+data/equipment_losses.db
+equipment-losses/.cache*.csv
 weekly_build_report.json

@@ -260,9 +260,10 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-05-10T07:51:44.377Z",
+  "last_updated": "2026-05-10T12:46:46.670Z",
   "granularity": "weekly",
   "snapshot_source": "wayback",
   "wayback_timestamp": "20220510044041",
-  "wayback_capture_date": "2022-05-10"
+  "wayback_capture_date": "2022-05-10",
+  "wayback_earliest_in_archive_note": "No DeepState /api/history/last JSON in Wayback CDX before 2022-05-10; geometry is from the earliest archived capture (~10 May 2022). Feb–Apr weekly labels are chronologically approximate."
 }
