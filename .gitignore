@@ -1,4 +1,13 @@
 data/raw-history/
 data/equipment_losses.db
+data/equipment_losses_export.csv
+data/equipment_losses_export_*.csv
+!data/equipment_losses_weekly.json
+!data/equipment_losses_meta.json
+!equipment-losses/data/equipment_model_lookup.csv
+!equipment-losses/data/equipment_interpreted_lookup.csv
+!equipment-losses/data/scoring/class_index.csv
+!equipment-losses/data/scoring/model_modifiers.csv
 equipment-losses/.cache*.csv
 weekly_build_report.json
+logs/

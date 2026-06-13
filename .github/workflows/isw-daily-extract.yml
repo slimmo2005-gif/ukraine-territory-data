@@ -1,0 +1,53 @@
+# Daily ISW territory snapshot (private research archive; not for public redistribution without ISW approval)
+name: Daily ISW Territory Extraction
+
+on:
+  schedule:
+    - cron: '30 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ISW extraction
+        run: node isw-daily-extract.js
+        env:
+          ONLY_MISSING: '1'
+
+      - name: List output files
+        run: |
+          echo "Generated files:"
+          ls -la data/isw/ || echo "No ISW data yet"
+
+      - name: Commit ISW data to repository
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/isw/
+          if ! git diff --cached --quiet; then
+            git commit -m "ISW daily extraction $(date -u +%Y-%m-%d)"
+            git push origin HEAD:master || echo "Push failed - data saved as artifact only"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: isw-daily-output-${{ github.run_id }}
+          path: data/isw/
