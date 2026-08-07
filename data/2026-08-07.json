@@ -1,9 +1,9 @@
 {
   "date": "2026-08-07",
   "source": "deepstate",
-  "total_russian_controlled_km2": 115956.29,
+  "total_russian_controlled_km2": 115959.36,
   "total_ukrainian_controlled_km2": 486100.93,
-  "total_disputed_km2": 1699.76,
+  "total_disputed_km2": 1696.69,
   "total_area_km2": 603757,
   "russian_change_km2": 0,
   "ukrainian_change_km2": 0,
@@ -11,9 +11,9 @@
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 21099.15,
+      "russian_controlled_km2": 21102.22,
       "ukrainian_controlled_km2": 4831.12,
-      "disputed_controlled_km2": 586.7297787344803,
+      "disputed_controlled_km2": 583.6597798922277,
       "total_area_km2": 26517,
       "russian_change_km2": 0,
       "ukrainian_change_km2": 0,
@@ -260,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-08-07T00:52:09.232Z"
+  "last_updated": "2026-08-07T20:39:35.797Z"
 }
