@@ -1,0 +1,200 @@
+{
+  "date": "2026-08-31",
+  "source": "isw",
+  "fetched_at": "2026-08-31T23:56:28.143Z",
+  "license_note": "ISW map data via public ArcGIS FeatureServer. Contact maps@understandingwar.org before public redistribution.",
+  "layers": {
+    "assessed_russian_control": {
+      "title": "Assessed Russian-controlled Ukrainian Territory",
+      "url": "https://services5.arcgis.com/SaBe5HMtmnbqSWlu/arcgis/rest/services/VIEW_RussiaCoTinUkraine_V3/FeatureServer/49",
+      "feature_count": 10
+    },
+    "infiltration": {
+      "title": "Assessed Russian Infiltration Areas in Ukraine",
+      "url": "https://services5.arcgis.com/SaBe5HMtmnbqSWlu/arcgis/rest/services/View_AssessedRussianInfiltrationAreasinUkraine_V4/FeatureServer/0",
+      "feature_count": 127
+    }
+  },
+  "total_assessed_russian_control_km2": 112858.13,
+  "total_infiltration_areas_km2": 679.53,
+  "total_assessed_russian_plus_infiltration_km2": 113537.66,
+  "assessed_russian_change_km2": 0,
+  "assessed_russian_plus_infiltration_change_km2": -19.15,
+  "oblasts": [
+    {
+      "oblast": "crimea",
+      "assessed_russian_control_km2": 26615.45,
+      "assessed_russian_plus_infiltration_km2": 26615.45,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "luhansk",
+      "assessed_russian_control_km2": 25813.19,
+      "assessed_russian_plus_infiltration_km2": 25813.19,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "zaporizhzhia",
+      "assessed_russian_control_km2": 19774.67,
+      "assessed_russian_plus_infiltration_km2": 19927.7,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": -0.1
+    },
+    {
+      "oblast": "donetsk",
+      "assessed_russian_control_km2": 19357.71,
+      "assessed_russian_plus_infiltration_km2": 19672.2,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": -18.28
+    },
+    {
+      "oblast": "kherson",
+      "assessed_russian_control_km2": 18762.49,
+      "assessed_russian_plus_infiltration_km2": 18762.49,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "kharkiv",
+      "assessed_russian_control_km2": 839.94,
+      "assessed_russian_plus_infiltration_km2": 949.97,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0.45
+    },
+    {
+      "oblast": "mykolaiv",
+      "assessed_russian_control_km2": 103.02,
+      "assessed_russian_plus_infiltration_km2": 103.02,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "sumy",
+      "assessed_russian_control_km2": 79,
+      "assessed_russian_plus_infiltration_km2": 143.33,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": -1.23
+    },
+    {
+      "oblast": "dnipropetrovsk",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0.31,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "kyiv",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "odesa",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "lviv",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "vinnytsia",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "poltava",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "cherkasy",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "zhytomyr",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "rivne",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "ivano-frankivsk",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "ternopil",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "khmelnytskyi",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "volyn",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "zakarpattia",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "chernivtsi",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "kirovohrad",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    },
+    {
+      "oblast": "chernihiv",
+      "assessed_russian_control_km2": 0,
+      "assessed_russian_plus_infiltration_km2": 0,
+      "assessed_russian_change_km2": 0,
+      "assessed_russian_plus_infiltration_change_km2": 0
+    }
+  ]
+}
