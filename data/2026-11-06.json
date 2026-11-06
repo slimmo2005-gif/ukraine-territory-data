@@ -1,23 +1,23 @@
 {
   "date": "2026-11-06",
   "source": "deepstate",
-  "total_russian_controlled_km2": 116080.65,
-  "total_ukrainian_controlled_km2": 486089.24,
-  "total_disputed_km2": 1587.11,
+  "total_russian_controlled_km2": 116084.88,
+  "total_ukrainian_controlled_km2": 486079.67,
+  "total_disputed_km2": 1592.45,
   "total_area_km2": 603757,
-  "russian_change_km2": -1113.32,
-  "ukrainian_change_km2": 1113.32,
-  "disputed_change_km2": 0,
+  "russian_change_km2": -1109.09,
+  "ukrainian_change_km2": 1103.75,
+  "disputed_change_km2": 5.34,
   "oblasts": [
     {
       "oblast": "donetsk",
-      "russian_controlled_km2": 21150.97,
-      "ukrainian_controlled_km2": 4842.47,
-      "disputed_controlled_km2": 523.5599999999998,
+      "russian_controlled_km2": 21155.2,
+      "ukrainian_controlled_km2": 4832.9,
+      "disputed_controlled_km2": 528.9,
       "total_area_km2": 26517,
-      "russian_change_km2": -3.637978807091713e-12,
-      "ukrainian_change_km2": -9.094947017729282e-13,
-      "disputed_change_km2": 0
+      "russian_change_km2": 4.229999999999563,
+      "ukrainian_change_km2": -9.570000000000618,
+      "disputed_change_km2": 5.3400000000001455
     },
     {
       "oblast": "luhansk",
@@ -260,5 +260,5 @@
       "disputed_change_km2": 0
     }
   ],
-  "last_updated": "2026-11-06T00:45:57.574Z"
+  "last_updated": "2026-11-06T23:57:31.228Z"
 }
